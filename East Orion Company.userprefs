@@ -1,0 +1,20 @@
+﻿<Properties StartupItem="Assembly-CSharp.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\scripts\StorageNode.cs">
+    <Files>
+      <File FileName="Assets\scripts\Orbiter.cs" Line="40" Column="1" />
+      <File FileName="Assets\scripts\CameraController.cs" Line="40" Column="13" />
+      <File FileName="Assets\scripts\InputController.cs" Line="10" Column="57" />
+      <File FileName="Assets\scripts\SystemSpawner.cs" Line="43" Column="1" />
+      <File FileName="Assets\scripts\ShipController.cs" Line="15" Column="23" />
+      <File FileName="Assets\scripts\ProductionNode.cs" Line="22" Column="1" />
+      <File FileName="Assets\scripts\ResourceType.cs" Line="7" Column="7" />
+      <File FileName="Assets\scripts\StorageNode.cs" Line="11" Column="29" />
+      <File FileName="Assets\scripts\Resource.cs" Line="13" Column="27" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
