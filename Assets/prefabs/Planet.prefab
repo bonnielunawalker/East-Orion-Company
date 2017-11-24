@@ -22,10 +22,8 @@ GameObject:
   - component: {fileID: 212971273892886362}
   - component: {fileID: 50278239759650392}
   - component: {fileID: 114116700196625752}
-  - component: {fileID: 58296280628681516}
   - component: {fileID: 60758371765544456}
-  - component: {fileID: 114331695566595568}
-  - component: {fileID: 114518764213277672}
+  - component: {fileID: 114884795626171114}
   m_Layer: 0
   m_Name: Planet
   m_TagString: Untagged
@@ -66,21 +64,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!58 &58296280628681516
-CircleCollider2D:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1762222212941510}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 5
 --- !u!60 &60758371765544456
 PolygonCollider2D:
   m_ObjectHideFlags: 1
@@ -186,7 +169,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c83dca1b1edace94b87f4582213f4dae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114331695566595568
+  moonPrefab: {fileID: 114116700196625752}
+--- !u!114 &114884795626171114
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -194,20 +178,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1762222212941510}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 27f4974304ad01a4883b5a279964c3b0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cycleTime: 3
-  connectedStorageNode: {fileID: 114518764213277672}
---- !u!114 &114518764213277672
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1762222212941510}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee9a3e78f7d9537488f890a120b3d27e, type: 3}
+  m_Script: {fileID: 11500000, guid: 1d807ebacbd58fb42b3c0fdb19908ff0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!212 &212971273892886362

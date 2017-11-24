@@ -44,7 +44,7 @@ public class CameraController : MonoBehaviour {
 		// Zoom in and out with the scroll wheel.
 		_camera.transform.Translate(new Vector3(0, 0, (Input.GetAxis ("Mouse ScrollWheel") * scrollSpeed) * (-_camera.transform.position.z / 50)));
 		if (_camera.transform.position.z > -8)
-			_camera.transform.Translate (new Vector3 (0, 0, -8), Space.World);
+			_camera.transform.position = new Vector3 (_camera.transform.position.x, _camera.transform.position.y, -8);
 	}
 
 	public void SetFollow(GameObject target) {

@@ -5,9 +5,14 @@ using UnityEngine;
 public class InputController : MonoBehaviour {
 
 	private GameObject text;
+	private GameObject infoPanel;
+
+	public bool inspectableSelected;
 
 	public void Start () {
 		text = GameObject.FindGameObjectWithTag ("Pause text").gameObject;
+		inspectableSelected = false;
+		infoPanel = GameObject.FindGameObjectWithTag ("Infopanel");
 	}
 
 	public void Update () {
@@ -25,5 +30,9 @@ public class InputController : MonoBehaviour {
 			text.GetComponent<UnityEngine.UI.Text> ().text = "Paused";
 		else
 			text.GetComponent<UnityEngine.UI.Text> ().text = "Gamespeed: " + Time.timeScale.ToString();
+
+		if (!inspectableSelected) {
+			infoPanel.SendMessage ("DisplayInfo", "");
+		}
 	}
 }

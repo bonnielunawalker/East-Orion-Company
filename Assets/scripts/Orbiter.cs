@@ -8,11 +8,10 @@ public class Orbiter : MonoBehaviour {
 	private GameObject _parentBody;
 	private Rigidbody2D _parentRb;
 	private Rigidbody2D _rb;
-	private Vector3 _delta;
 
-	public Vector2 Delta {
-		get { return _delta; }
-	}
+	public bool isMoon = false;
+
+	public Orbiter moonPrefab;
 
 	public void Start () {
 		_gravitationalConstant = 1000;
