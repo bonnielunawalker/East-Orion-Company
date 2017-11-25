@@ -14,7 +14,7 @@ public class Wander1Unit : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        Vector3 accel = wander.getSteering();
+		Vector2 accel = wander.getSteering();
 
         steeringBasics.steer(accel);
         steeringBasics.lookWhereYoureGoing();

@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-[RequireComponent (typeof (Rigidbody))]
+[RequireComponent (typeof (Rigidbody2D))]
 public class SteeringBasics : MonoBehaviour {
 	
 	public float maxVelocity = 3.5f;
@@ -24,7 +24,7 @@ public class SteeringBasics : MonoBehaviour {
 
 	public float turnSpeed = 20f;
 
-	private Rigidbody rb;
+	private Rigidbody2D rb;
 
 	public bool smoothing = true;
 	public int numSamplesForSmoothing = 5;
@@ -32,29 +32,22 @@ public class SteeringBasics : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		rb = GetComponent<Rigidbody> ();
+		rb = GetComponent<Rigidbody2D> ();
 	}
 	
 	/* Updates the velocity of the current game object by the given linear acceleration */
-	public void steer(Vector3 linearAcceleration) {
+	public void steer(Vector2 linearAcceleration) {
 		rb.velocity += linearAcceleration * Time.deltaTime;
 		
 		if (rb.velocity.magnitude > maxVelocity) {
 			rb.velocity = rb.velocity.normalized * maxVelocity;
 		}
 	}
-
-	public void steer(Vector2 linearAcceleration) {
-		this.steer (new Vector3 (linearAcceleration.x, linearAcceleration.y, 0));
-	}
 	
 	/* A seek steering behavior. Will return the steering for the current game object to seek a given position */
-	public Vector3 seek(Vector3 targetPosition, float maxSeekAccel) {
+	public Vector2 seek(Vector2 targetPosition, float maxSeekAccel) {
 		//Get the direction
-		Vector3 acceleration = targetPosition - transform.position;
-		
-		//Remove the z coordinate
-		acceleration.z = 0;
+		Vector2 acceleration = targetPosition - (Vector2)transform.position;
 		
 		acceleration.Normalize ();
 		
@@ -64,7 +57,7 @@ public class SteeringBasics : MonoBehaviour {
 		return acceleration;
 	}
 
-    public Vector3 seek(Vector3 targetPosition)
+	public Vector2 seek(Vector2 targetPosition)
     {
         return seek(targetPosition, maxAcceleration);
     }
@@ -117,12 +110,9 @@ public class SteeringBasics : MonoBehaviour {
     }
 
     /* Returns the steering for a character so it arrives at the target */
-    public Vector3 arrive(Vector3 targetPosition) {
+	public Vector2 arrive(Vector2 targetPosition) {
 		/* Get the right direction for the linear acceleration */
-		Vector3 targetVelocity = targetPosition - transform.position;
-
-		// Remove the z coordinate
-		targetVelocity.z = 0;
+		Vector2 targetVelocity = targetPosition - (Vector2)transform.position;
 		
 		/* Get the distance to the target */
 		float dist = targetVelocity.magnitude;
@@ -146,7 +136,7 @@ public class SteeringBasics : MonoBehaviour {
 		targetVelocity *= targetSpeed;
 		
 		/* Calculate the linear acceleration we want */
-		Vector3 acceleration = targetVelocity - new Vector3(rb.velocity.x, rb.velocity.y, 0);
+		Vector2 acceleration = targetVelocity - rb.velocity;
 		/*
 		 Rather than accelerate the character to the correct speed in 1 second, 
 		 accelerate so we reach the desired speed in timeToTarget seconds 
@@ -163,14 +153,14 @@ public class SteeringBasics : MonoBehaviour {
 		return acceleration;
 	}
 
-	public Vector3 interpose(Rigidbody target1, Rigidbody target2)
+	public Vector2 interpose(Rigidbody2D target1, Rigidbody2D target2)
     {
-        Vector3 midPoint = (target1.position + target2.position) / 2;
+		Vector2 midPoint = (target1.position + target2.position) / 2;
 
-        float timeToReachMidPoint = Vector3.Distance(midPoint, transform.position) / maxVelocity;
+		float timeToReachMidPoint = Vector2.Distance(midPoint, transform.position) / maxVelocity;
 
-        Vector3 futureTarget1Pos = target1.position + target1.velocity * timeToReachMidPoint;
-        Vector3 futureTarget2Pos = target2.position + target2.velocity * timeToReachMidPoint;
+		Vector2 futureTarget1Pos = target1.position + target1.velocity * timeToReachMidPoint;
+		Vector2 futureTarget2Pos = target2.position + target2.velocity * timeToReachMidPoint;
 
         midPoint = (futureTarget1Pos + futureTarget2Pos) / 2;
 
@@ -178,15 +168,15 @@ public class SteeringBasics : MonoBehaviour {
     }
 
     /* Checks to see if the target is in front of the character */
-    public bool isInFront(Vector3 target)
+	public bool isInFront(Vector2 target)
     {
         return isFacing(target, 0);
     }
 
-    public bool isFacing(Vector3 target, float cosineValue) { 
+	public bool isFacing(Vector2 target, float cosineValue) { 
         Vector2 facing = transform.right.normalized;
 
-        Vector2 directionToTarget = (target - transform.position);
+		Vector2 directionToTarget = (target - (Vector2)transform.position);
         directionToTarget.Normalize();
 
         return Vector2.Dot(facing, directionToTarget) >= cosineValue;
@@ -194,8 +184,8 @@ public class SteeringBasics : MonoBehaviour {
 
     public static float getBoundingRadius(Transform t)
     {
-        SphereCollider col = t.GetComponent<SphereCollider>();
-        return Mathf.Max(t.localScale.x, t.localScale.y, t.localScale.z) * col.radius;
+		CircleCollider2D col = t.GetComponent<CircleCollider2D>();
+        return Mathf.Max(t.localScale.x, t.localScale.y) * col.radius;
     }
 
 }

@@ -5,13 +5,13 @@ using System;
 
 [System.Serializable]
 public class LinePath  {
-	public Vector3[] nodes;
+	public Vector2[] nodes;
 	private float[] distances;
     [System.NonSerialized]
 	public float maxDist;
 
 	// Indexer declaration.
-	public Vector3 this[int i]
+	public Vector2 this[int i]
 	{
 		get
 		{
@@ -31,14 +31,14 @@ public class LinePath  {
 		}
 	}
 
-	public Vector3 endNode {
+	public Vector2 endNode {
 		get {
 			return nodes[nodes.Length-1];
 		}
 	}
 
 	/* This function creates a path of line segments */
-	public LinePath(Vector3[] nodes) {
+	public LinePath(Vector2[] nodes) {
 		this.nodes = nodes;
 
 		calcDistances();
@@ -51,7 +51,7 @@ public class LinePath  {
 		distances[0] = 0;
 
 		for(var i = 0; i < nodes.Length - 1; i++) {
-			distances[i+1] = distances[i] + Vector3.Distance(nodes[i], nodes[i+1]);
+			distances[i+1] = distances[i] + Vector2.Distance(nodes[i], nodes[i+1]);
 		}
 		
 		maxDist = distances[distances.Length-1];
@@ -65,7 +65,7 @@ public class LinePath  {
 	}
 	
 	/* Gets the param for the closest point on the path given a position */
-	public float getParam(Vector3 position) {
+	public float getParam(Vector2 position) {
 		int closestSegment = getClosestSegment(position);
 		
 		float param = this.distances[closestSegment] + getParamForSegment(position, nodes[closestSegment], nodes[closestSegment+1]);
@@ -73,7 +73,7 @@ public class LinePath  {
 		return param; 
 	}
 
-	public int getClosestSegment(Vector3 position) {
+	public int getClosestSegment(Vector2 position) {
 		/* Find the first point in the closest line segment to the path */
 		float closestDist = distToSegment(position, nodes[0], nodes[1]);
 		int closestSegment = 0;
@@ -91,7 +91,7 @@ public class LinePath  {
 	}
 	
 	/* Given a param it gets the position on the path */
-	public Vector3 getPosition(float param, bool pathLoop = false) {
+	public Vector2 getPosition(float param, bool pathLoop = false) {
 		/* Make sure the param is not past the beginning or end of the path */
 		if (param < 0) {
 			param = (pathLoop) ? param + maxDist : 0;
@@ -115,49 +115,49 @@ public class LinePath  {
 		}
 		
 		/* Get how far along the line segment the param is */
-		float t = (param - distances[i]) / Vector3.Distance(nodes[i], nodes[i+1]);
+		float t = (param - distances[i]) / Vector2.Distance(nodes[i], nodes[i+1]);
 		
 		/* Get the position of the param */
-		return Vector3.Lerp(nodes[i], nodes[i+1], t);
+		return Vector2.Lerp(nodes[i], nodes[i+1], t);
 	}
 	
 	/* Gives the distance of a point to a line segment.
 	 * p is the point, v and w are the two points of the line segment */
-	private static float distToSegment(Vector3 p, Vector3 v, Vector3 w) { 
-		Vector3 vw = w - v;
+	private static float distToSegment(Vector2 p, Vector2 v, Vector2 w) { 
+		Vector2 vw = w - v;
 		
-		float l2 = Vector3.Dot(vw, vw);
+		float l2 = Vector2.Dot(vw, vw);
 		
 		if (l2 == 0) {
-			return Vector3.Distance(p, v);
+			return Vector2.Distance(p, v);
 		}
 		
-		float t = Vector3.Dot(p - v, vw) / l2;
+		float t = Vector2.Dot(p - v, vw) / l2;
 		
 		if (t < 0) {
-			return Vector3.Distance(p, v);
+			return Vector2.Distance(p, v);
 		}
 		
 		if (t > 1) {
-			return Vector3.Distance(p, w);
+			return Vector2.Distance(p, w);
 		}
 		
-		Vector3 closestPoint = Vector3.Lerp(v, w, t);
+		Vector2 closestPoint = Vector2.Lerp(v, w, t);
 		
-		return Vector3.Distance(p, closestPoint);
+		return Vector2.Distance(p, closestPoint);
 	}
 	
 	/* Finds the param for the closest point on the segment vw given the point p */
-	private static float getParamForSegment(Vector3 p, Vector3 v, Vector3 w) {
-		Vector3 vw = w - v;
+	private static float getParamForSegment(Vector2 p, Vector2 v, Vector2 w) {
+		Vector2 vw = w - v;
 
-		float l2 = Vector3.Dot(vw, vw);
+		float l2 = Vector2.Dot(vw, vw);
 		
 		if (l2 == 0) {
 			return 0;
 		}
 		
-		float t = Vector3.Dot(p - v, vw) / l2;
+		float t = Vector2.Dot(p - v, vw) / l2;
 		
 		if(t < 0) {
 			t = 0;
@@ -169,7 +169,7 @@ public class LinePath  {
 	}
 
 	public void removeNode(int i ) {
-		Vector3[] newNodes = new Vector3[nodes.Length - 1];
+		Vector2[] newNodes = new Vector2[nodes.Length - 1];
 
 		int newNodesIndex = 0;
 		for (int j = 0; j < newNodes.Length; j++) {

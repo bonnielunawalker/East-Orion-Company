@@ -43,6 +43,6 @@ public class WallAvoidanceUnit: MonoBehaviour
 
     public bool isAtEndOfPath()
     {
-        return Vector3.Distance(path.endNode, transform.position) < followPath.stopRadius;
+		return Vector2.Distance(path.endNode, transform.position) < followPath.stopRadius;
     }
 }

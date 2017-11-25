@@ -14,7 +14,7 @@ public class SeekUnit : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        Vector3 accel = steeringBasics.seek(target.position);
+		Vector2 accel = steeringBasics.seek(target.position);
 
         steeringBasics.steer(accel);
         steeringBasics.lookWhereYoureGoing();

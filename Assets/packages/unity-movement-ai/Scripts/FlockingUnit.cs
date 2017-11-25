@@ -30,7 +30,7 @@ public class FlockingUnit : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector3 accel = Vector3.zero;
+		Vector2 accel = Vector2.zero;
 
         accel += cohesion.getSteering(sensor.targets) * cohesionWeight;
         accel += separation.getSteering(sensor.targets) * separationWeight;

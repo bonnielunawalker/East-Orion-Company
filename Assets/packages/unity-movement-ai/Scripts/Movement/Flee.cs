@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(Rigidbody2D))]
 public class Flee : MonoBehaviour {
 
     public float panicDist = 3.5f;
@@ -12,18 +12,18 @@ public class Flee : MonoBehaviour {
 
     public float timeToTarget = 0.1f;
 
-    private Rigidbody rb;
+    private Rigidbody2D rb;
 
     // Use this for initialization
     void Start () {
-        rb = GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody2D>();
 	}
 
     /* A flee steering behavior. Will return the steering for the current game object to flee a given position */
-    public Vector3 getSteering(Vector3 targetPosition)
+	public Vector2 getSteering(Vector2 targetPosition)
     {
         //Get the direction
-        Vector3 acceleration = transform.position - targetPosition;
+		Vector2 acceleration = (Vector2)transform.position - targetPosition;
 
         //If the target is far way then don't flee
         if (acceleration.magnitude > panicDist)
@@ -44,18 +44,15 @@ public class Flee : MonoBehaviour {
             else
             {
                 rb.velocity = Vector2.zero;
-                return Vector3.zero;
+				return Vector2.zero;
             }
         }
 
         return giveMaxAccel(acceleration);
     }
 
-    private Vector3 giveMaxAccel(Vector3 v)
+	private Vector2 giveMaxAccel(Vector2 v)
     {
-        //Remove the z coordinate
-        v.z = 0;
-
         v.Normalize();
 
         //Accelerate to the target

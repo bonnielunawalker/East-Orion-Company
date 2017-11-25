@@ -6,30 +6,30 @@ public class OffsetPursuit : MonoBehaviour {
     /* Maximum prediction time the pursue will predict in the future */
     public float maxPrediction = 1f;
 
-    private Rigidbody rb;
+    private Rigidbody2D rb;
     private SteeringBasics steeringBasics;
 
     // Use this for initialization
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody2D>();
         steeringBasics = GetComponent<SteeringBasics>();
     }
 
-    public Vector3 getSteering(Rigidbody target, Vector3 offset)
+	public Vector2 getSteering(Rigidbody2D target, Vector2 offset)
     {
-        Vector3 targetPos;
+		Vector2 targetPos;
         return getSteering(target, offset, out targetPos);
     }
 
-    public Vector3 getSteering(Rigidbody target, Vector3 offset, out Vector3 targetPos)
+	public Vector2 getSteering(Rigidbody2D target, Vector2 offset, out Vector2 targetPos)
     {
-        Vector3 worldOffsetPos = target.position + target.transform.TransformDirection(offset);
+		Vector2 worldOffsetPos = target.position + (Vector2)target.transform.TransformDirection(offset);
 
         //Debug.DrawLine(transform.position, worldOffsetPos);
 
         /* Calculate the distance to the offset point */
-        Vector3 displacement = worldOffsetPos - transform.position;
+		Vector2 displacement = worldOffsetPos - (Vector2)transform.position;
         float distance = displacement.magnitude;
 
         /* Get the character's speed */

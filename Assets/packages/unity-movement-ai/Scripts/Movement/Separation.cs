@@ -20,14 +20,14 @@ public class Separation : MonoBehaviour {
         boundingRadius = SteeringBasics.getBoundingRadius(transform);
     }
 
-    public Vector3 getSteering(ICollection<Rigidbody> targets)
+	public Vector2 getSteering(ICollection<Rigidbody2D> targets)
     {
-        Vector3 acceleration = Vector3.zero;
+		Vector2 acceleration = Vector2.zero;
 
-        foreach (Rigidbody r in targets)
+        foreach (Rigidbody2D r in targets)
         {
             /* Get the direction and distance from the target */
-            Vector3 direction = transform.position - r.position;
+			Vector2 direction = (Vector2)transform.position - r.position;
             float dist = direction.magnitude;
 
             if (dist < maxSepDist)

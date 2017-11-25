@@ -29,7 +29,7 @@ public class FollowPathUnit : MonoBehaviour {
             path.reversePath();
         }
 
-        Vector3 accel = followPath.getSteering(path, pathLoop);
+		Vector2 accel = followPath.getSteering(path, pathLoop);
 
         steeringBasics.steer(accel);
         steeringBasics.lookWhereYoureGoing();
@@ -37,6 +37,6 @@ public class FollowPathUnit : MonoBehaviour {
 
     public bool isAtEndOfPath()
     {
-        return Vector3.Distance(path.endNode, transform.position) < followPath.stopRadius;
+		return Vector2.Distance(path.endNode, transform.position) < followPath.stopRadius;
     }
 }

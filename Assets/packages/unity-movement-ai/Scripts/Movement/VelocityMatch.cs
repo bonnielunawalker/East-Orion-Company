@@ -12,7 +12,7 @@ public class VelocityMatch : MonoBehaviour
 
     private float facingCosineVal;
 
-    private Rigidbody rb;
+    private Rigidbody2D rb;
     private SteeringBasics steeringBasics;
 
     // Use this for initialization
@@ -20,21 +20,21 @@ public class VelocityMatch : MonoBehaviour
     {
         facingCosineVal = Mathf.Cos(facingCosine * Mathf.Deg2Rad);
 
-        rb = GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody2D>();
         steeringBasics = GetComponent<SteeringBasics>();
     }
 
-    public Vector3 getSteering(ICollection<Rigidbody> targets)
+	public Vector2 getSteering(ICollection<Rigidbody2D> targets)
     {
-        Vector3 accel = Vector3.zero;
+		Vector2 accel = Vector2.zero;
         int count = 0;
 
-        foreach (Rigidbody r in targets)
+        foreach (Rigidbody2D r in targets)
         {
             if (steeringBasics.isFacing(r.position, facingCosineVal))
             {
                 /* Calculate the acceleration we want to match this target */
-                Vector3 a = r.velocity - rb.velocity;
+				Vector2 a = r.velocity - rb.velocity;
                 /*
                  Rather than accelerate the character to the correct speed in 1 second, 
                  accelerate so we reach the desired speed in timeToTarget seconds 

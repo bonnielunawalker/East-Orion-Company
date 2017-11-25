@@ -3,7 +3,7 @@ using System.Collections;
 
 public class ArriveUnit : MonoBehaviour {
 
-    public Vector3 targetPosition;
+    public Vector2 targetPosition;
 
     private SteeringBasics steeringBasics;
 
@@ -16,7 +16,7 @@ public class ArriveUnit : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        Vector3 accel = steeringBasics.arrive(targetPosition);
+		Vector2 accel = steeringBasics.arrive(targetPosition);
 
         steeringBasics.steer(accel);
         steeringBasics.lookWhereYoureGoing();

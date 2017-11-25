@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class HideUnit : MonoBehaviour {
-    public Rigidbody target;
+	public Rigidbody2D target;
 
     private SteeringBasics steeringBasics;
     private Hide hide;
@@ -23,10 +23,10 @@ public class HideUnit : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        Vector3 hidePosition;
-        Vector3 hideAccel = hide.getSteering(target, obstacleSpawner.objs, out hidePosition);
+		Vector2 hidePosition;
+		Vector2 hideAccel = hide.getSteering(target, obstacleSpawner.objs, out hidePosition);
 
-        Vector3 accel = wallAvoid.getSteering(hidePosition - transform.position);
+		Vector2 accel = wallAvoid.getSteering(hidePosition - (Vector2)transform.position);
 
         if (accel.magnitude < 0.005f)
         {

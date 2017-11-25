@@ -16,26 +16,26 @@ public class WallAvoidance : MonoBehaviour {
 
     public float maxAcceleration = 40f;
 
-    private Rigidbody rb;
+    private Rigidbody2D rb;
     private SteeringBasics steeringBasics;
 
     // Use this for initialization
     void Start () {
-        rb = GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody2D>();
         steeringBasics = GetComponent<SteeringBasics>();
     }
 
-    public Vector3 getSteering()
+	public Vector2 getSteering()
     {
         return getSteering(rb.velocity);
     }
 
-    public Vector3 getSteering(Vector3 facingDir)
+	public Vector2 getSteering(Vector2 facingDir)
     {
-        Vector3 acceleration = Vector3.zero;
+		Vector2 acceleration = Vector2.zero;
 
         /* Creates the ray direction vector */
-        Vector3[] rayDirs = new Vector3[3];
+		Vector2[] rayDirs = new Vector2[3];
         rayDirs[0] = facingDir.normalized;
 
         float orientation = Mathf.Atan2(rb.velocity.y, rb.velocity.x);
@@ -52,15 +52,7 @@ public class WallAvoidance : MonoBehaviour {
         }
 
         /* Create a target away from the wall to seek */
-        Vector3 targetPostition = hit.point + hit.normal * wallAvoidDistance;
-
-        /* If velocity and the collision normal are parallel then move the target a bit to
-         the left or right of the normal */
-        Vector3 cross = Vector3.Cross(rb.velocity, hit.normal);
-        if (cross.magnitude < 0.005f)
-        {
-            targetPostition = targetPostition + new Vector3(-hit.normal.y, hit.normal.x, hit.normal.z);
-        }
+		Vector2 targetPostition = hit.point + hit.normal * wallAvoidDistance;
 
         return steeringBasics.seek(targetPostition, maxAcceleration);
     }
@@ -71,7 +63,7 @@ public class WallAvoidance : MonoBehaviour {
         return new Vector3(Mathf.Cos(orientation), Mathf.Sin(orientation), 0);
     }
 
-    private bool findObstacle(Vector3[] rayDirs, out RaycastHit firstHit)
+	private bool findObstacle(Vector2[] rayDirs, out RaycastHit firstHit)
     {
         firstHit = new RaycastHit();
         bool foundObs = false;

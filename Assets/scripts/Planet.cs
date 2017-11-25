@@ -82,7 +82,7 @@ public class Planet : MonoBehaviour, Inspectable {
 	}
 
 	public string ObjectInfo() {
-		string result = "";
+		string result = gameObject.name + "\n";
 
 		foreach (IndustryNode n in industryNodes)
 			result += n.ObjectInfo ();

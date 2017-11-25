@@ -17,13 +17,13 @@ public class Cohesion : MonoBehaviour {
         steeringBasics = GetComponent<SteeringBasics>();
 	}
 
-    public Vector3 getSteering(ICollection<Rigidbody> targets)
+	public Vector2 getSteering(ICollection<Rigidbody2D> targets)
     {
-        Vector3 centerOfMass = Vector3.zero;
+		Vector2 centerOfMass = Vector2.zero;
         int count = 0;
 
         /* Sums up everyone's position who is close enough and in front of the character */
-        foreach (Rigidbody r in targets)
+        foreach (Rigidbody2D r in targets)
         {
             if (steeringBasics.isFacing(r.position, facingCosineVal))
             {
@@ -34,7 +34,7 @@ public class Cohesion : MonoBehaviour {
 
         if (count == 0)
         {
-            return Vector3.zero;
+			return Vector2.zero;
         }
         else
         {

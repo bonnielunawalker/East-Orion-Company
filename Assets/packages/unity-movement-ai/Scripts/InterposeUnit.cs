@@ -3,8 +3,8 @@ using System.Collections;
 
 public class InterposeUnit : MonoBehaviour {
 
-    public Rigidbody target1;
-    public Rigidbody target2;
+    public Rigidbody2D target1;
+    public Rigidbody2D target2;
 
     private SteeringBasics steeringBasics;
 
@@ -17,7 +17,7 @@ public class InterposeUnit : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        Vector3 accel = steeringBasics.interpose(target1, target2);
+		Vector2 accel = steeringBasics.interpose(target1, target2);
 
         steeringBasics.steer(accel);
         steeringBasics.lookWhereYoureGoing();

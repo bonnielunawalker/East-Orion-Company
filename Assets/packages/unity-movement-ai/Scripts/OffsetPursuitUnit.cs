@@ -3,8 +3,8 @@ using System.Collections;
 
 public class OffsetPursuitUnit : MonoBehaviour {
 
-    public Rigidbody target;
-    public Vector3 offset;
+    public Rigidbody2D target;
+	public Vector2 offset;
     public float groupLookDist = 1.5f;
 
     private SteeringBasics steeringBasics;
@@ -26,14 +26,14 @@ public class OffsetPursuitUnit : MonoBehaviour {
     // Update is called once per frame
     void LateUpdate()
     {
-        Vector3 targetPos;
-        Vector3 offsetAccel = offsetPursuit.getSteering(target, offset, out targetPos);
-        Vector3 sepAccel = separation.getSteering(sensor.targets);
+		Vector2 targetPos;
+		Vector2 offsetAccel = offsetPursuit.getSteering(target, offset, out targetPos);
+		Vector2 sepAccel = separation.getSteering(sensor.targets);
 
         steeringBasics.steer(offsetAccel + sepAccel);
 
         /* If we are still arriving then look where we are going, else look the same direction as our formation target */
-        if (Vector3.Distance(transform.position, targetPos) > groupLookDist)
+		if (Vector2.Distance(transform.position, targetPos) > groupLookDist)
         {
             steeringBasics.lookWhereYoureGoing();
         } else

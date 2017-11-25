@@ -22,7 +22,7 @@ public class WanderAvoidUnit : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        Vector3 accel = colAvoid.getSteering(colAvoidSensor.targets);
+		Vector2 accel = colAvoid.getSteering(colAvoidSensor.targets);
 
         if (accel.magnitude < 0.005f)
         {

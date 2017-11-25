@@ -18,7 +18,7 @@ public class Spawner : MonoBehaviour {
     private float[] thingsToAvoidRadius;
 
     [System.NonSerialized]
-    public List<Rigidbody> objs = new List<Rigidbody>();
+	public List<Rigidbody2D> objs = new List<Rigidbody2D>();
 
     // Use this for initialization
     void Start()
@@ -73,7 +73,7 @@ public class Spawner : MonoBehaviour {
                 transform.eulerAngles = euler;
             }
 
-            objs.Add(t.GetComponent<Rigidbody>());
+			objs.Add(t.GetComponent<Rigidbody2D>());
 
             return true;
         }
@@ -95,7 +95,7 @@ public class Spawner : MonoBehaviour {
         }
 
         //Make sure it does not overlap with any existing object
-        foreach(Rigidbody o in objs)
+		foreach(Rigidbody2D o in objs)
         {
             float dist = Vector3.Distance(o.position, pos);
 

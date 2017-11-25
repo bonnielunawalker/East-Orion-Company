@@ -7,18 +7,18 @@ public class Pursue : MonoBehaviour
     /* Maximum prediction time the pursue will predict in the future */
     public float maxPrediction = 1f;
 
-    private Rigidbody rb;
+    private Rigidbody2D rb;
     private SteeringBasics steeringBasics;
 
 	// Use this for initialization
 	void Start () {
-        rb = GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody2D>();
         steeringBasics = GetComponent<SteeringBasics>();
 	}
 	
-	public Vector3 getSteering (Rigidbody target) {
+	public Vector2 getSteering (Rigidbody2D target) {
         /* Calculate the distance to the target */
-        Vector3 displacement = target.position - transform.position;
+		Vector2 displacement = target.position - (Vector2)transform.position;
         float distance = displacement.magnitude;
 
         /* Get the character's speed */
@@ -36,7 +36,7 @@ public class Pursue : MonoBehaviour
         }
 
         /* Put the target together based on where we think the target will be */
-        Vector3 explicitTarget = target.position + target.velocity*prediction;
+		Vector2 explicitTarget = target.position + target.velocity*prediction;
 
         return steeringBasics.seek(explicitTarget);
     }

@@ -10,24 +10,24 @@ public class FollowPath : MonoBehaviour {
 	public float pathDirection = 1f;
 
 	private SteeringBasics steeringBasics;
-	private Rigidbody rb;
+	private Rigidbody2D rb;
 
 	// Use this for initialization
 	void Start () {
 		steeringBasics = GetComponent<SteeringBasics> ();
-		rb = GetComponent<Rigidbody> ();
+		rb = GetComponent<Rigidbody2D> ();
 	}
 
-	public Vector3 getSteering (LinePath path) {
+	public Vector2 getSteering (LinePath path) {
 		return getSteering (path, false);
 	}
 
-	public Vector3 getSteering (LinePath path, bool pathLoop) {
-		Vector3 targetPosition;
+	public Vector2 getSteering (LinePath path, bool pathLoop) {
+		Vector2 targetPosition;
 		return getSteering(path, pathLoop, out targetPosition);
 	}
 
-	public Vector3 getSteering (LinePath path, bool pathLoop, out Vector3 targetPosition) {
+	public Vector2 getSteering (LinePath path, bool pathLoop, out Vector2 targetPosition) {
 
 		// If the path has only one node then just go to that position;
 		if (path.Length == 1) {
@@ -38,16 +38,16 @@ public class FollowPath : MonoBehaviour {
             if (!pathLoop)
             {
                 /* Find the final destination of the character on this path */
-                Vector2 finalDestination = (pathDirection > 0) ? path[path.Length - 1] : path[0];
+				Vector2 finalDestination = (pathDirection > 0) ? path[path.Length - 1] : path[0];
 
                 /* If we are close enough to the final destination then either stop moving or reverse if 
                  * the character is set to loop on paths */
-                if (Vector2.Distance(transform.position, finalDestination) < stopRadius)
+				if (Vector2.Distance(transform.position, finalDestination) < stopRadius)
                 {
                     targetPosition = finalDestination;
 
-                    rb.velocity = Vector2.zero;
-                    return Vector2.zero;
+					rb.velocity = Vector2.zero;
+					return Vector2.zero;
                 }
             }
 			

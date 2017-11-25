@@ -9,19 +9,19 @@ public class CollisionAvoidance : MonoBehaviour {
 
     private float characterRadius;
 
-    private Rigidbody rb;
+    private Rigidbody2D rb;
 
     // Use this for initialization
     void Start()
     {
         characterRadius = SteeringBasics.getBoundingRadius(transform);
 
-        rb = GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody2D>();
     }
 
-    public Vector3 getSteering(ICollection<Rigidbody> targets)
+	public Vector2 getSteering(ICollection<Rigidbody2D> targets)
     {
-        Vector3 acceleration = Vector3.zero;
+		Vector2 acceleration = Vector2.zero;
 
         /* 1. Find the target that the character will collide with first */
 
@@ -30,16 +30,16 @@ public class CollisionAvoidance : MonoBehaviour {
 
         /* The first target that will collide and other data that
 		 * we will need and can avoid recalculating */
-        Rigidbody firstTarget = null;
+        Rigidbody2D firstTarget = null;
         //float firstMinSeparation = 0, firstDistance = 0;
         float firstMinSeparation = 0, firstDistance = 0, firstRadius = 0;
-        Vector3 firstRelativePos = Vector3.zero, firstRelativeVel = Vector3.zero;
+		Vector2 firstRelativePos = Vector2.zero, firstRelativeVel = Vector2.zero;
 
-        foreach (Rigidbody r in targets)
+        foreach (Rigidbody2D r in targets)
         {
             /* Calculate the time to collision */
-            Vector3 relativePos = transform.position - r.position;
-            Vector3 relativeVel = rb.velocity - r.velocity;
+			Vector2 relativePos = (Vector2)transform.position - r.position;
+			Vector2 relativeVel = rb.velocity - r.velocity;
             float distance = relativePos.magnitude;
             float relativeSpeed = relativeVel.magnitude;
 
@@ -48,10 +48,10 @@ public class CollisionAvoidance : MonoBehaviour {
                 continue;
             }
 
-            float timeToCollision = -1 * Vector3.Dot(relativePos, relativeVel) / (relativeSpeed * relativeSpeed);
+			float timeToCollision = -1 * Vector2.Dot(relativePos, relativeVel) / (relativeSpeed * relativeSpeed);
 
             /* Check if they will collide at all */
-            Vector3 separation = relativePos + relativeVel * timeToCollision;
+			Vector2 separation = relativePos + relativeVel * timeToCollision;
             float minSeparation = separation.magnitude;
 
             float targetRadius = SteeringBasics.getBoundingRadius(r.transform);
@@ -88,7 +88,7 @@ public class CollisionAvoidance : MonoBehaviour {
         if (firstMinSeparation <= 0 || firstDistance < characterRadius + firstRadius)
         //if (firstMinSeparation <= 0 || firstDistance < 2 * agentRadius)
         {
-            acceleration = transform.position - firstTarget.position;
+			acceleration = (Vector2)transform.position - firstTarget.position;
         }
         /* Else calculate the future relative position */
         else

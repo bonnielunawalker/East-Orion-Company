@@ -26,7 +26,7 @@ public class Wander1 : MonoBehaviour {
 		steeringBasics = GetComponent<SteeringBasics> ();
 	}
 
-    public Vector3 getSteering() {
+	public Vector2 getSteering() {
 		float characterOrientation = transform.rotation.eulerAngles.z * Mathf.Deg2Rad;
 
         /* Update the wander orientation */
@@ -36,7 +36,7 @@ public class Wander1 : MonoBehaviour {
         float targetOrientation = wanderOrientation + characterOrientation;
 		
 		/* Calculate the center of the wander circle */
-		Vector3 targetPosition = transform.position + (orientationToVector (characterOrientation) * wanderOffset);
+		Vector2 targetPosition = (Vector2)transform.position + (orientationToVector (characterOrientation) * wanderOffset);
 		
 		//debugRing.transform.position = targetPosition;
 		
@@ -54,8 +54,8 @@ public class Wander1 : MonoBehaviour {
 	}
 	
 	/* Returns the orientation as a unit vector */
-	Vector3 orientationToVector(float orientation) {
-		return new Vector3(Mathf.Cos(orientation), Mathf.Sin(orientation), 0);
+	Vector2 orientationToVector(float orientation) {
+		return new Vector2(Mathf.Cos(orientation), Mathf.Sin(orientation));
 	}
 
 }
