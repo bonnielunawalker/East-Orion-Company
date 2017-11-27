@@ -312,7 +312,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 355181360}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 617.6, y: -226.59995, z: 0}
+  m_LocalPosition: {x: 511.97998, y: -159.75, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1987726160}
@@ -321,8 +321,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -128.90002, y: 82.400055}
-  m_SizeDelta: {x: 258.8, y: 163.8}
+  m_AnchoredPosition: {x: -234.52, y: 149.25}
+  m_SizeDelta: {x: 470.05, y: 297.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &355181362
 MonoBehaviour:
@@ -374,6 +374,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c272b2926abdf7b4a8df02fb87b810ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &987943099 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1424297377406300, guid: fc1f450c272f8354ca506f719c72301d,
+    type: 2}
+  m_PrefabInternal: {fileID: 1403611896}
+--- !u!58 &987943104
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 987943099}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 16
 --- !u!1 &1158493403
 GameObject:
   m_ObjectHideFlags: 0
@@ -508,30 +528,32 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 114629108717850798, guid: fc1f450c272f8354ca506f719c72301d,
-        type: 2}
-      propertyPath: planetTemplate
-      value: 
-      objectReference: {fileID: 1762222212941510, guid: 33c07884922174e428e47259d5d92a22,
-        type: 2}
-    - target: {fileID: 114629108717850798, guid: fc1f450c272f8354ca506f719c72301d,
+    - target: {fileID: 114926312889810920, guid: fc1f450c272f8354ca506f719c72301d,
         type: 2}
       propertyPath: planetSpawnLimit
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 114926312889810920, guid: fc1f450c272f8354ca506f719c72301d,
+        type: 2}
+      propertyPath: planetSpawnMin
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114926312889810920, guid: fc1f450c272f8354ca506f719c72301d,
+        type: 2}
+      propertyPath: planetSpawnMax
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114926312889810920, guid: fc1f450c272f8354ca506f719c72301d,
+        type: 2}
+      propertyPath: numOfShips
       value: 10
       objectReference: {fileID: 0}
-    - target: {fileID: 114629108717850798, guid: fc1f450c272f8354ca506f719c72301d,
-        type: 2}
-      propertyPath: shipTemplate
-      value: 
-      objectReference: {fileID: 1658099358000814, guid: f5d7980203402f14a98808a7fd66787d,
-        type: 2}
-    - target: {fileID: 114629108717850798, guid: fc1f450c272f8354ca506f719c72301d,
+    - target: {fileID: 114926312889810920, guid: fc1f450c272f8354ca506f719c72301d,
         type: 2}
       propertyPath: planetSeperationDistance
-      value: 200
+      value: 50
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 0}
+    m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: fc1f450c272f8354ca506f719c72301d, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &1404781884
@@ -695,7 +717,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1987726159}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.00050354004, y: 0.0000076293945, z: 0}
+  m_LocalPosition: {x: 0.8913269, y: -0.55999756, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 355181361}
@@ -703,8 +725,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.00050235004, y: 0.000007987001}
-  m_SizeDelta: {x: 258.8, y: 163.8}
+  m_AnchoredPosition: {x: 0.89133, y: -0.56}
+  m_SizeDelta: {x: 477.44, y: 302.18}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1987726161
 MonoBehaviour:

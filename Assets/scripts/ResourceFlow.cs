@@ -3,17 +3,32 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public struct ResourceFlow {
+public class ResourceFlow {
 	public ResourceType type;
 	public int amount;
+
+	public ResourceFlow() {}
+
+	public ResourceFlow(ResourceType t, int amt) {
+		type = t;
+		amount = amt;
+	}
 }
 
 [System.Serializable]
 public enum ResourceType {
 	Ice,
-	Ore,
+	IronOre,
+	AluminiumOre,
 	Gas,
 	Water,
+	Steel,
+	Aluminium,
 	Grain,
-	Cattle
+	Cattle,
+	Fibre,
+	Cloth,
+	Clothing,
+	Meat,
+	CannedFood
 }

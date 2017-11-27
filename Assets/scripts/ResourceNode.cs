@@ -6,7 +6,8 @@ public class ResourceNode : MonoBehaviour, IndustryNode {
 
 	public static ResourceType[] rawResources = new ResourceType[] {
 		ResourceType.Ice,
-		ResourceType.Ore,
+		ResourceType.IronOre,
+		ResourceType.AluminiumOre,
 		ResourceType.Gas
 	};
 
@@ -16,12 +17,20 @@ public class ResourceNode : MonoBehaviour, IndustryNode {
 
 	public StorageNode connectedStorageNode;
 
+	public StorageNode ConnectedStorageNode { 
+		get { return connectedStorageNode; }
+	}
+
 	[SerializeField]
 	public List<ResourceFlow> outputs = new List<ResourceFlow> ();
 
 	public void Update () {
 		if (RequirementsMet () && !producing)
 			StartCoroutine (Produce());
+	}
+
+	public bool SuppliesResource(ResourceType type) {
+		return outputs.Exists (output => output.type == type);
 	}
 
 	private bool RequirementsMet() {
@@ -31,8 +40,8 @@ public class ResourceNode : MonoBehaviour, IndustryNode {
 	private IEnumerator Produce() {
 		producing = true;
 		yield return new WaitForSeconds (cycleTime);
-		foreach (ResourceFlow resource in outputs)
-			connectedStorageNode.Put(resource.type, resource.amount);
+		foreach (ResourceFlow r in outputs)
+			connectedStorageNode.Put(new Resource(r.type, r.amount));
 
 		producing = false;
 	}

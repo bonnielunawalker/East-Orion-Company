@@ -11,6 +11,23 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 1658099358000814}
   m_IsPrefabParent: 1
+--- !u!1 &1606309526188476
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4334638623667676}
+  - component: {fileID: 114885153481644618}
+  - component: {fileID: 58058368247095178}
+  m_Layer: 0
+  m_Name: StorageNode
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1658099358000814
 GameObject:
   m_ObjectHideFlags: 0
@@ -21,8 +38,9 @@ GameObject:
   - component: {fileID: 4417458679289588}
   - component: {fileID: 212088287074174560}
   - component: {fileID: 50987849204368308}
-  - component: {fileID: 114860248367307492}
+  - component: {fileID: 114640948947302872}
   - component: {fileID: 114772373424209770}
+  - component: {fileID: 114212768958706806}
   - component: {fileID: 60092683771729408}
   m_Layer: 0
   m_Name: Ship
@@ -31,6 +49,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!4 &4334638623667676
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1606309526188476}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4417458679289588}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4417458679289588
 Transform:
   m_ObjectHideFlags: 1
@@ -38,9 +69,10 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1658099358000814}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 13.6, y: 6.92, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 4334638623667676}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -64,6 +96,21 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!58 &58058368247095178
+CircleCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1606309526188476}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 1
 --- !u!60 &60092683771729408
 PolygonCollider2D:
   m_ObjectHideFlags: 1
@@ -148,6 +195,34 @@ PolygonCollider2D:
       - {x: -0.29, y: -0.55}
       - {x: -0.19999999, y: -0.51}
       - {x: -0.19, y: -0.48}
+--- !u!114 &114212768958706806
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1658099358000814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b77c6efbff30b8c45b2e345603162f25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ship: {fileID: 0}
+--- !u!114 &114640948947302872
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1658099358000814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fd92fa3efd620043901ab2f481be6f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  state: 0
+  currentSystem: {fileID: 0}
+  destination: {fileID: 0}
+  cargoCapacity: 20
+  cargoHold: {fileID: 0}
 --- !u!114 &114772373424209770
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -167,20 +242,23 @@ MonoBehaviour:
   turnSpeed: 20
   smoothing: 1
   numSamplesForSmoothing: 5
---- !u!114 &114860248367307492
+--- !u!114 &114885153481644618
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1658099358000814}
+  m_GameObject: {fileID: 1606309526188476}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33dd7a74c5271b34cb39d68e05f16ecb, type: 3}
+  m_Script: {fileID: 11500000, guid: ee9a3e78f7d9537488f890a120b3d27e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentSystem: {fileID: 0}
-  destination: {fileID: 0}
-  thrust: 100
+  resources: []
+  maxUnits: 20
+  usedCapacity: 0
+  template:
+    type: 0
+    amount: 0
 --- !u!212 &212088287074174560
 SpriteRenderer:
   m_ObjectHideFlags: 1

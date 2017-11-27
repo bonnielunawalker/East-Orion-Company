@@ -1,0 +1,59 @@
+Do we have no state?
+ - Is it because we have no job?
+   - Find a new job
+   - Find a location with the resources we need for that job
+   - Reserve those resources
+   - Are the reserved resources enough to satisfy the job requirements?
+     - Remove the job from the job board
+   - Does the job require more resources than we can supply?
+     - Edit the job so that we subtract the reserved resources
+ - Is it because of something else?
+   - Sorry to hear that, throw an error
+
+Are we landed?
+ - Don't render
+ - Keep our position the same relative to our landing location
+ - Make our velocity 0
+
+Are we picking up?
+ - Are we at the pickup location?
+   - Take the goods from the location
+   - Set our destination to the dropoff location
+ - Are we not at the pickup location?
+   - Move towards the pickup location
+
+Are we dropping off?
+ - Are we at the dropoff location?
+   - Put the goods in the dropoff location
+   - Set our job, destination and state to none/null
+ - Are we not at the dropoff location?
+   - Move towards the dropoff location
+
+ResourceTransferManager:
+------------------------
+
+Holds no actual resources, just facilitates the transfer of resources between two storagenodes.
+
+Main functionality is Transfer method that takes a StorageNode 'from' and a StorageNode 'to' as arguments and transfers a third Resource argument between them.
+
+Needs helper functions to get connected storagenodes from factories and resource nodes.
+
+
+When a freight job is completed, what needs to happen?
+
+1. The ship needs to know it has finished its job, land and start looking for a new job.
+
+2. The factory needs to know its job has been completed and that it can try to produce again.
+
+3. The job needs to be removed from the job board.
+
+
+Factory Update()
+
+ - Are we producing?
+   - Don't need to do anything!
+ - Are we not producing?
+   - Are we waiting on a delivery?
+     - Just chill!
+   - Have our requirements been met?
+     - Start producing!

@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Planet : MonoBehaviour, Inspectable {
+public class Planet : MonoBehaviour, IInspectable {
 
 	private bool _selected;
 	private GameObject _infoPanel;
+	private StarSystem _system;
 
 	[SerializeField]
-	public List<IndustryNode> industryNodes;
+	public List<IndustryNode> industryNodes =  new List<IndustryNode>();
 
 	public List<ResourceNode> ResourceNodes {
 		get {
@@ -47,23 +48,7 @@ public class Planet : MonoBehaviour, Inspectable {
 		_selected = false;
 		_infoPanel = GameObject.FindGameObjectWithTag ("Infopanel");
 
-		// Set up resource and storage nodes.
-		industryNodes = new List<IndustryNode>();
-		StorageNode sNode = gameObject.AddComponent<StorageNode> ();
-		ResourceNode rNode = gameObject.AddComponent<ResourceNode> ();
-
-		// Set up a new output flow for this planet's resource node.
-		ResourceFlow newOutput = new ResourceFlow();
-		newOutput.type = ResourceNode.rawResources [Random.Range (0, ResourceNode.rawResources.Length - 1)];
-		newOutput.amount = Random.Range (1, 6);
-
-		rNode.outputs.Add(newOutput);
-		rNode.cycleTime = Random.Range (1, 11);
-		rNode.connectedStorageNode = sNode;
-
-		// Add the nodes to the planet's list of nodes to be accessed later.
-		industryNodes.Add (sNode);
-		industryNodes.Add (rNode);
+		_system = gameObject.GetComponentInParent<StarSystem> ();
 	}
 
 	void FixedUpdate () {
@@ -82,11 +67,52 @@ public class Planet : MonoBehaviour, Inspectable {
 	}
 
 	public string ObjectInfo() {
-		string result = gameObject.name + "\n";
+		string result = gameObject.name + "\nProduces: ";
 
-		foreach (IndustryNode n in industryNodes)
-			result += n.ObjectInfo ();
+		foreach (ResourceNode n in ResourceNodes) {
+			foreach (ResourceFlow output in n.outputs) {
+				result += "\n\t" + System.Enum.GetName(typeof(ResourceType), output.type);
+				result += "\tAmount: " + output.amount;
+			}
+		}
+
+		foreach (ProductionNode n in ProductionNodes) {
+			foreach (ResourceFlow output in n.outputs) {
+				result += "\n\t" + System.Enum.GetName(typeof(ResourceType), output.type);
+				result += "\tAmount: " + output.amount;
+			}
+		}
+
+		result += "\nConsumes: ";
+
+		foreach (ProductionNode n in ProductionNodes) {
+			foreach (ResourceFlow input in n.inputs) {
+				result += "\n\t" + System.Enum.GetName(typeof(ResourceType), input.type);
+				result += "\tAmount: " + input.amount;
+				if (n.state == ProductionNode.NodeState.Producing)
+					Debug.Log("PRODUCING!");
+			}
+		}
+
+		result += "\nStored: ";
+		int reservations = 0;
+
+		foreach (StorageNode n in StorageNodes) {
+			foreach (Resource storedResource in n.resources) {
+				result += "\n\t" + System.Enum.GetName (typeof(ResourceType), storedResource.type);
+				result += "\tAmount: " + storedResource.amount;
+			}
+
+			reservations += n.reservations.Count;
+		}
+
+		result += "\nReservations: " + reservations;
+			
 
 		return result;
+	}
+
+	public void PostJob() {
+		return;
 	}
 }
