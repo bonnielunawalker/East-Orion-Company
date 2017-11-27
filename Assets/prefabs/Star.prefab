@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 212533414556617114}
   - component: {fileID: 50597213494788716}
   - component: {fileID: 114926312889810920}
+  - component: {fileID: 58109789779601422}
   m_Layer: 0
   m_Name: Star
   m_TagString: Untagged
@@ -62,6 +63,21 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!58 &58109789779601422
+CircleCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1424297377406300}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 16
 --- !u!114 &114926312889810920
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -95,10 +111,10 @@ MonoBehaviour:
   - {fileID: 1552667318815680, guid: 33528ff2ee334404da4b17ddf6da5494, type: 2}
   star: {fileID: 4659095329347374}
   planetSeperationDistance: 50
-  planetSpawnMax: 10
-  planetSpawnMin: 0
+  planetSpawnMax: 20
+  planetSpawnMin: 15
   moonDistance: 7
-  numOfShips: 20
+  numOfShips: 50
   possiblePlanetSprites:
   - {fileID: 21300000, guid: 9047fabb2e8e4e14a90367b4076b2153, type: 3}
   - {fileID: 21300000, guid: 68ed8c7974a992f4296cfe91ffb4c10d, type: 3}

@@ -31,7 +31,7 @@ public class Ship : MonoBehaviour, IInspectable {
 
 	public StorageNode cargoHold;
 
-	private Dictionary<Job, ResourceReservation> _reservations = new Dictionary<Job, ResourceReservation> ();
+	private Dictionary<Contract, ResourceReservation> _reservations = new Dictionary<Contract, ResourceReservation> ();
 
 	public void Start() {
 		state = ShipState.None;
@@ -47,29 +47,30 @@ public class Ship : MonoBehaviour, IInspectable {
 
 	public void FixedUpdate () {
 		if (state == ShipState.None) {											// Do we have no state?
-			if (currentJob == null && state != ShipState.SearchingForJob) {							// Is it because we have no job?
+			if (currentJob == null && state != ShipState.SearchingForJob) {			// Is it because we have no job?
 				state = ShipState.SearchingForJob;
-				StartCoroutine(FindFreightJob ());										// Get a new freight job.
-			} else {																// Is it for some other reason?
-				Debug.LogWarning ("Ship has no state but has job.");						// Sorry to hear that, log an error.
+				StartCoroutine(FindFreightJob ());									// Get a new freight job.
+			} else {
+				return;
 			}
-			_rb.velocity = Vector2.zero;									
 		} else if (state == ShipState.Landed) {									// Are we landed?
-			_rb.velocity = Vector2.zero;											// Don't move, only placeholder now.
+			_rb.velocity = Vector2.zero;
 			gameObject.transform.position = destination.transform.position;
 		} else if (state == ShipState.Pickup) {									// Are we picking up?
 			if (_atDestination) {													// Are we at our pickup destination?
+				_rb.velocity = Vector2.zero;
 				StorageNode n = destination.GetComponentInChildren<StorageNode>();
 				n.TransferReserved (cargoHold, _reservations[currentJob]);
 				_reservations.Remove (currentJob);
 				_atDestination = false;
-				destination = currentJob.creator.gameObject.transform.parent.gameObject;	// Set our destination to the dropoff location. TODO: Actually pick up the goods.
+				destination = currentJob.issuer.gameObject.transform.parent.gameObject;	// Set our destination to the dropoff location. TODO: Actually pick up the goods.
 				state = ShipState.Dropoff;												// Update our shipstate
 			} else {																// Are we not at our pickup destination?
 				Arrive(destination);													// Move towards our destination.
 			}
 		} else if (state == ShipState.Dropoff) {								// Are we dropping off?
 			if (_atDestination) {													// Are we at our dropoff destination?
+				_rb.velocity = Vector2.zero;
 				state = ShipState.None;												// Set our state to none. TODO: Actually drop off the goods.
 				cargoHold.TransferResources(destination.GetComponentInChildren<StorageNode>(), new Resource(currentJob.resource, currentJob.amount));
 				currentSystem.JobBoard.CompleteJob(currentJob);
@@ -87,7 +88,6 @@ public class Ship : MonoBehaviour, IInspectable {
 
 	private IEnumerator FindFreightJob() {
 		currentJob = null;
-		state = ShipState.None;
 		destination = null;
 
 		FreightJob jobBeingConsidered = currentSystem.TakeFreightJob ();
@@ -97,10 +97,9 @@ public class Ship : MonoBehaviour, IInspectable {
 
 			if (destination == null) {
 				//Debug.LogWarning ("No goods of type required for job in system: " + System.Enum.GetName (typeof(ResourceType), jobBeingConsidered.resource));
-				state = ShipState.None;
-
 				currentSystem.JobBoard.AddJob (jobBeingConsidered);
 				yield return new WaitForSeconds (4);
+				state = ShipState.None;
 			} else {
 				StorageNode destinationStorageNode = destination.GetComponentInChildren<StorageNode> ();
 
@@ -108,20 +107,18 @@ public class Ship : MonoBehaviour, IInspectable {
 
 				if (storedAmount > 0) {
 					_reservations.Add(jobBeingConsidered, destinationStorageNode.ReserveResources (new Resource (jobBeingConsidered.resource, storedAmount), this.gameObject));
-					state = ShipState.Pickup;
 					currentJob = jobBeingConsidered;
 					state = ShipState.Pickup;
-					yield return new WaitForSeconds (4);
 				} else {
 					//Debug.Log ("No resource of type " + System.Enum.GetName (typeof(ResourceType), jobBeingConsidered.resource) + " stored in node");
-					state = ShipState.None;
 					currentSystem.JobBoard.AddJob (jobBeingConsidered);
 					yield return new WaitForSeconds (4);
+					state = ShipState.None;
 				}
 			}
 		} else {
-			state = ShipState.None;
 			yield return new WaitForSeconds (4);
+			state = ShipState.None;
 		}
 	}
 

@@ -70,12 +70,17 @@ public class StorageNode : MonoBehaviour, IndustryNode {
 		if (storedAmount >= resource.amount)
 			to.Put(Take (resource));
 		else
-			Debug.LogWarning("Not enough units of " + System.Enum.GetName(typeof(ResourceType), resource.type) + ". " + resource.amount + "requested, only " + storedAmount + " stored.");
+			Debug.LogWarning("Not enough units of " + System.Enum.GetName(typeof(ResourceType), resource.type) + ". " + resource.amount + " requested, only " + storedAmount + " stored.");
 	}
 
 
 	public void TransferReserved(StorageNode to, ResourceReservation reservation) {
+		ReturnReservationToPool (reservation);
 		TransferResources (to, reservation.resource);
+	}
+
+	private void ReturnReservationToPool(ResourceReservation reservation) {
+		Put (reservation.resource);
 		reservations.Remove (reservation);
 	}
 
@@ -91,7 +96,7 @@ public class StorageNode : MonoBehaviour, IndustryNode {
 	}
 
 	public ResourceReservation ReserveResources(Resource resource, GameObject reserver) {
-		Debug.Log ("Reserving " + resource.amount + " of " + System.Enum.GetName (typeof(ResourceType), resource.type));
+		Debug.Log ("Reserving " + resource.amount + " units of " + System.Enum.GetName (typeof(ResourceType), resource.type));
 		ResourceReservation newReservation = new ResourceReservation (Take (resource), reserver);
 		reservations.Add (newReservation);
 		return newReservation;

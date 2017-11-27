@@ -111,8 +111,4 @@ public class Planet : MonoBehaviour, IInspectable {
 
 		return result;
 	}
-
-	public void PostJob() {
-		return;
-	}
 }

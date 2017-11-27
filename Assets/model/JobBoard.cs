@@ -7,9 +7,9 @@ public class JobBoard {
 	private StarSystem _system;
 	private List<Planet> _planets;
 
-	private List<Job> _jobs = new List<Job>();
+	private List<Contract> _jobs = new List<Contract>();
 
-	public List<Job> Jobs {
+	public List<Contract> Jobs {
 		get { return _jobs; }
 	}
 
@@ -21,7 +21,7 @@ public class JobBoard {
 			_planets.Add(p);
 	}
 
-	public void AddJob(Job j) {
+	public void AddJob(Contract j) {
 		_jobs.Add (j);
 	}
 
@@ -29,9 +29,9 @@ public class JobBoard {
 		_jobs.Add(new FreightJob(location, resource, amount));
 	}
 
-	public void CompleteJob(Job j) {
+	public void CompleteJob(Contract j) {
 		_jobs.Remove (j);
-		j.creator.SendMessage ("NotifyOfJobCompletion", j);
+		j.issuer.SendMessage ("NotifyOfJobCompletion", j);
 		Debug.Log ("Job complete!");
 	}
 }

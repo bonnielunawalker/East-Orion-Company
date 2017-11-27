@@ -57,8 +57,6 @@ public class StarSystem : MonoBehaviour, IInspectable {
 		"Pericles"
 	};
 
-
-
 	public void Start () {
 		name = _starNames[Random.Range(0, _starNames.Length)];
 		_planets = new List<Planet> ();
@@ -167,7 +165,7 @@ public class StarSystem : MonoBehaviour, IInspectable {
 	}
 
 	public FreightJob TakeFreightJob() {
-		foreach (Job j in _jobBoard.Jobs) {
+		foreach (Contract j in _jobBoard.Jobs) {
 			if (j.GetType() == typeof(FreightJob)) {
 				_jobBoard.Jobs.Remove (j);
 				return j as FreightJob;
@@ -177,7 +175,7 @@ public class StarSystem : MonoBehaviour, IInspectable {
 		return null;
 	}
 
-	public void RemoveJob(Job job) {
+	public void RemoveJob(Contract job) {
 		if (_jobBoard.Jobs.Contains (job))
 			_jobBoard.Jobs.Remove (job);
 		else

@@ -208,7 +208,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 180149498}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -20}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -321,7 +321,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -234.52, y: 149.25}
+  m_AnchoredPosition: {x: -234.52002, y: 149.25}
   m_SizeDelta: {x: 470.05, y: 297.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &355181362
@@ -374,26 +374,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c272b2926abdf7b4a8df02fb87b810ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &987943099 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1424297377406300, guid: fc1f450c272f8354ca506f719c72301d,
-    type: 2}
-  m_PrefabInternal: {fileID: 1403611896}
---- !u!58 &987943104
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 987943099}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 16
 --- !u!1 &1158493403
 GameObject:
   m_ObjectHideFlags: 0
@@ -476,7 +456,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1158493403}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 100}
+  m_LocalPosition: {x: 0, y: 0, z: 80}
   m_LocalScale: {x: 0.32362458, y: 0.32362458, z: 0.32362458}
   m_Children:
   - {fileID: 1657913406}
@@ -527,31 +507,6 @@ Prefab:
     - target: {fileID: 4659095329347374, guid: fc1f450c272f8354ca506f719c72301d, type: 2}
       propertyPath: m_RootOrder
       value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114926312889810920, guid: fc1f450c272f8354ca506f719c72301d,
-        type: 2}
-      propertyPath: planetSpawnLimit
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 114926312889810920, guid: fc1f450c272f8354ca506f719c72301d,
-        type: 2}
-      propertyPath: planetSpawnMin
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 114926312889810920, guid: fc1f450c272f8354ca506f719c72301d,
-        type: 2}
-      propertyPath: planetSpawnMax
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 114926312889810920, guid: fc1f450c272f8354ca506f719c72301d,
-        type: 2}
-      propertyPath: numOfShips
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 114926312889810920, guid: fc1f450c272f8354ca506f719c72301d,
-        type: 2}
-      propertyPath: planetSeperationDistance
-      value: 50
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: fc1f450c272f8354ca506f719c72301d, type: 2}
@@ -725,7 +680,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.89133, y: -0.56}
+  m_AnchoredPosition: {x: 0.89133, y: -0.55999994}
   m_SizeDelta: {x: 477.44, y: 302.18}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1987726161

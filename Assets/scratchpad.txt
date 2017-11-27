@@ -57,3 +57,5 @@ Factory Update()
      - Just chill!
    - Have our requirements been met?
      - Start producing!
+   - Have our requirements not been met?
+     - Post some jobs!

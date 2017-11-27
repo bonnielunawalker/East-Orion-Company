@@ -56,7 +56,8 @@ public class ProductionNode : MonoBehaviour, IndustryNode {
 				continue;
 			else {
 				reqsMet = false;
-				_requiredResources.Add(new Resource(resource.type, resource.amount * 10));
+				if (!_requiredResources.Exists(r => r.type == resource.type))
+					_requiredResources.Add(new Resource(resource.type, resource.amount));
 			}
 		}
 
@@ -98,7 +99,7 @@ public class ProductionNode : MonoBehaviour, IndustryNode {
 		jb.AddFreightJob (gameObject, r.type, r.amount);
 	}
 
-	private void NotifyOfJobCompletion(Job j) {
+	private void NotifyOfJobCompletion(Contract j) {
 		if (j.GetType() == typeof(FreightJob)) {
 			//UnreserveResources ((FreightJob)j);
 			state = NodeState.None;

@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FreightJob : Job {
+public class FreightJob : Contract {
 
 	public ResourceType resource;
 	public int amount;
 
 	public FreightJob(GameObject loc, ResourceType res, int amt) {
-		creator = loc;
+		issuer = loc;
 		resource = res;
 		amount = amt;
 	}
