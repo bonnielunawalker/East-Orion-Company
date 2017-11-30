@@ -7,7 +7,7 @@ public class ProductionNode : IndustryNode
 {
 	public enum NodeState
     {
-		None,
+		Idle,
 		Producing,
 		WaitingForDelivery
 	}
@@ -24,7 +24,7 @@ public class ProductionNode : IndustryNode
 	[Range(1, 1000)]
 	public float cycleTime = 3f;
 
-	public NodeState state = NodeState.None;
+	public NodeState state = NodeState.Idle;
 
 	public void Start()
     {
@@ -33,25 +33,45 @@ public class ProductionNode : IndustryNode
 
 	public void Update ()
     {
+        // If we are producing, skip everything else
 		if (state == NodeState.Producing)
 			return;
-		else
+
+        // Update our list of required resources
+        UpdateRequirements();
+
+        // If we have resources that we need to request, create contracts for them.
+        if (_requiredResources.Count != 0)
         {
-			if (state != NodeState.WaitingForDelivery && RequirementsMet ())
-				StartCoroutine (Produce ());
-			else if (state != NodeState.WaitingForDelivery)
-				state = NodeState.WaitingForDelivery;
+            state = NodeState.WaitingForDelivery;
 
-            if (_requiredResources.Count != 0)
-                foreach (Resource r in _requiredResources)
-                    CreateFreightContract(r);
+            foreach (Resource r in _requiredResources)
+                CreateFreightContract(r);
 
+            // Clean up. Remove all required resources for which we have already placed an order.
             foreach (ResourceType t in _requestedResourceTypes)
                 _requiredResources.RemoveAll(r => r.type == t);
         }
-	}
 
-	public override bool SuppliesResource(ResourceType type)
+        // If after all those checks we did not need to place any orders and do not need any resources, start producing our product
+        if (_requestedResourceTypes.Count == 0 && _requiredResources.Count == 0)
+        {
+            state = NodeState.Producing;
+            StartCoroutine(Produce());
+        }
+    }
+
+    private void UpdateRequirements()
+    {
+        foreach (ResourceFlow resource in inputs)
+            if (connectedStorageNode.HasResourceAmount(resource.type, resource.amount) || _reservedResources.Exists(r => r.type == resource.type))
+                continue;
+            // Only add a new resource requirement if one for this resource does not already exist and we have not already made a contract
+            else if (!_requiredResources.Exists(r => r.type == resource.type) && !_requestedResourceTypes.Exists(r => r == resource.type))
+                _requiredResources.Add(new Resource(resource.type, resource.amount));
+    }
+
+    public override bool SuppliesResource(ResourceType type)
     {
 		return outputs.Exists (output => output.type == type);
 	}
@@ -59,30 +79,6 @@ public class ProductionNode : IndustryNode
 	public override bool HasResourceAmount (ResourceType type, int amount)
     {
 		return connectedStorageNode.HasResourceAmount (type, amount);
-	}
-
-	private bool RequirementsMet()
-    {
-		bool reqsMet = true;
-
-		_requiredResources.Clear ();
-
-		foreach (ResourceFlow resource in inputs)
-        {
-			if (connectedStorageNode.HasResourceAmount (resource.type, resource.amount))
-				continue;
-			else
-            {
-				reqsMet = false;
-				if (!_requiredResources.Exists(r => r.type == resource.type))
-					_requiredResources.Add(new Resource(resource.type, resource.amount));
-			}
-		}
-
-		if (!reqsMet)
-			Debug.Log ("Requirements not met! I should post a job");
-
-		return reqsMet && connectedStorageNode != null;
 	}
 
 	private void ReserveResources()
@@ -95,21 +91,16 @@ public class ProductionNode : IndustryNode
 		}
 	}
 
-	private void UnreserveResources(FreightContract c)
+	private void UnreserveResources()
     {
 		List<Resource> temp = new List<Resource> ();
 
-		foreach (Resource r in _reservedResources) {
-			if (c.reservation.resource.type == r.type && c.reservation.resource.amount == r.amount)
-            {
-				connectedStorageNode.Put (new Resource(r.type, r.amount));
-				temp.Add (r);
-			}
-		}
+        foreach (Resource r in _reservedResources)
+            connectedStorageNode.Put(r);
 
-		// Remove all resources that have been delivered from the reserved resource list
-		// since they are now back in the connected storage node.
-		_reservedResources.RemoveAll (resource => temp.Contains (resource));
+        // Remove all resources that have been delivered from the reserved resource list
+        // since they are now back in the connected storage node.
+        _reservedResources.Clear();
 	}
 
 	private void CreateFreightContract(Resource resource)
@@ -131,7 +122,7 @@ public class ProductionNode : IndustryNode
 		employmentData.employer.ConsiderIssuingContract (newContract);
 	}
 
-    public void InformOfContractRejection(FreightContract c)
+    public void NotifyOfContractRejection(FreightContract c)
     {
         _requestedResourceTypes.Remove(c.reservation.resource.type);
         _requiredResources.Add(c.reservation.resource);
@@ -149,14 +140,9 @@ public class ProductionNode : IndustryNode
 
 	public void NotifyOfContractCompletion(Contract c)
     {
-		if (c.GetType() == typeof(FreightContract))
-        {
-			//UnreserveResources ((FreightJob)j);
-			state = NodeState.None;
-			FreightContract fc = c as FreightContract;
-			_requiredResources.RemoveAll (r => r.type == fc.reservation.resource.type);
-		}
-	}
+        FreightContract fc = (FreightContract)c;
+        _requestedResourceTypes.RemoveAll(r => r == fc.reservation.resource.type);
+    }
 
 	private void DeductResources()
     {
@@ -166,12 +152,15 @@ public class ProductionNode : IndustryNode
 
 	private IEnumerator Produce()
     {
-		DeductResources ();
+        UnreserveResources();
+		DeductResources();
 		yield return new WaitForSeconds (cycleTime);
 		foreach (ResourceFlow r in outputs)
 			connectedStorageNode.Put(new Resource(r.type, r.amount));
 
-		state = NodeState.None;
+		state = NodeState.Idle;
+
+        Debug.Log("Production cycle complete!");
 	}
 
 	public override string ObjectInfo()

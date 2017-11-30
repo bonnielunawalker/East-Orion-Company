@@ -31,12 +31,8 @@ public class StorageNode : IndustryNode
 	public override bool HasResourceAmount(ResourceType type, int amount)
     {
 		foreach (Resource r in resources)
-        {
-			if (r.type == type && r.amount == amount)
-            {
+			if (r.type == type && r.amount >= amount)
 				return true;
-			}
-		}
 
 		return false;
 
@@ -100,8 +96,7 @@ public class StorageNode : IndustryNode
 
 	public ResourceReservation MakeReservation (StorageNode reserver, Resource resource)
     {
-		Take (resource);
-		ResourceReservation newReservation = new ResourceReservation (reserver, resource, this);
+		ResourceReservation newReservation = new ResourceReservation (reserver, Take(resource), this);
 		reservations.Add(reserver, newReservation);
 		return newReservation;
 	}

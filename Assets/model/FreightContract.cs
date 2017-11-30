@@ -35,10 +35,7 @@ public class FreightContract : Contract
     {
 		issuer.NotifyOfContractCompletion (this);
 
-		if (creator.GetType () == typeof(ProductionNode))
-        {
-			ProductionNode pn = (ProductionNode) creator.GetComponent<IndustryNode>() as ProductionNode;
-			pn.NotifyOfContractCompletion (this);
-		}
+		ProductionNode pn = (ProductionNode) creator.GetComponent<IndustryNode>() as ProductionNode;
+		pn.NotifyOfContractCompletion (this);
 	}
 }
