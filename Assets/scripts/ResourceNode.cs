@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ResourceNode : MonoBehaviour, IndustryNode {
-
-	public static ResourceType[] rawResources = new ResourceType[] {
+public class ResourceNode : IndustryNode
+{
+	public static ResourceType[] rawResources = new ResourceType[]
+    {
 		ResourceType.Ice,
 		ResourceType.IronOre,
 		ResourceType.AluminiumOre,
@@ -15,29 +16,37 @@ public class ResourceNode : MonoBehaviour, IndustryNode {
 	public float cycleTime = 3f;
 	public bool producing = false;
 
-	public StorageNode connectedStorageNode;
-
-	public StorageNode ConnectedStorageNode { 
-		get { return connectedStorageNode; }
-	}
-
 	[SerializeField]
 	public List<ResourceFlow> outputs = new List<ResourceFlow> ();
 
-	public void Update () {
+	public void Start()
+    {
+		employmentData = GetComponent<Employee> ();
+	}
+
+	public void Update ()
+    {
 		if (RequirementsMet () && !producing)
 			StartCoroutine (Produce());
 	}
 
-	public bool SuppliesResource(ResourceType type) {
+	public override bool SuppliesResource(ResourceType type)
+    {
 		return outputs.Exists (output => output.type == type);
 	}
 
-	private bool RequirementsMet() {
+	public override bool HasResourceAmount(ResourceType type, int amount)
+    {
+		return connectedStorageNode.HasResourceAmount (type, amount);
+	}
+
+	private bool RequirementsMet()
+    {
 		return connectedStorageNode != null;
 	}
 
-	private IEnumerator Produce() {
+	private IEnumerator Produce()
+    {
 		producing = true;
 		yield return new WaitForSeconds (cycleTime);
 		foreach (ResourceFlow r in outputs)
@@ -46,7 +55,8 @@ public class ResourceNode : MonoBehaviour, IndustryNode {
 		producing = false;
 	}
 
-	public string ObjectInfo() {
+	public override string ObjectInfo()
+    {
 		string result = "ResourceNode\n";
 
 		foreach (ResourceFlow resource in outputs)

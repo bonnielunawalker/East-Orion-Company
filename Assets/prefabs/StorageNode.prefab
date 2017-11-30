@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4549411996278714}
   - component: {fileID: 114698157561740404}
   - component: {fileID: 58506394668242354}
+  - component: {fileID: 114882016256732914}
   m_Layer: 0
   m_Name: StorageNode
   m_TagString: Untagged
@@ -67,9 +68,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee9a3e78f7d9537488f890a120b3d27e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  connectedStorageNode: {fileID: 114698157561740404}
+  employmentData: {fileID: 0}
   resources: []
   maxUnits: 99999
   usedCapacity: 0
   template:
     type: 0
     amount: 0
+--- !u!114 &114882016256732914
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1310786593364694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 956546164355fda418f66fea5f96c491, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  employer: {fileID: 0}
+  contract:
+    issuer: {fileID: 0}
+    owner: {fileID: 0}
+    completingEntity: {fileID: 0}
+    jobBoard: {fileID: 0}

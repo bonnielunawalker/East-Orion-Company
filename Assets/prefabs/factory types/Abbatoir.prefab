@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4528730888622394}
   - component: {fileID: 114625444663796060}
   - component: {fileID: 58718578273545354}
+  - component: {fileID: 114310425754568288}
   m_Layer: 0
   m_Name: Abbatoir
   m_TagString: Untagged
@@ -56,6 +57,23 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 1
+--- !u!114 &114310425754568288
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1981239573841542}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 956546164355fda418f66fea5f96c491, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  employer: {fileID: 0}
+  contract:
+    issuer: {fileID: 0}
+    owner: {fileID: 0}
+    completingEntity: {fileID: 0}
+    jobBoard: {fileID: 0}
 --- !u!114 &114625444663796060
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -67,6 +85,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27f4974304ad01a4883b5a279964c3b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  connectedStorageNode: {fileID: 0}
+  employmentData: {fileID: 0}
   inputs:
   - type: 8
     amount: 1
@@ -75,4 +95,3 @@ MonoBehaviour:
     amount: 1
   cycleTime: 3
   state: 0
-  connectedStorageNode: {fileID: 0}

@@ -2,9 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Contract {
+[System.Serializable]
+public abstract class Contract
+{
+	public Employee creator;
+	public Company issuer;
+	public Company owner;
+	public Employee completingEntity;
+	public JobBoard jobBoard;
 
-	public GameObject issuer;
+    public abstract void MarkAsAccepted(Company acceptingCompany);
 
+    public abstract void MarkAsComplete();
 
+    public abstract void MarkAsUnableToComplete();
+
+    public abstract void NotifyOfCompletion();
 }

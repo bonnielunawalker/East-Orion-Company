@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4092828670226856}
   - component: {fileID: 114296420719742132}
   - component: {fileID: 58110541034218010}
+  - component: {fileID: 114361586652529234}
   m_Layer: 0
   m_Name: _ResourceNodeTemplate
   m_TagString: Untagged
@@ -67,7 +68,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 698d8a8c1df77a243b81edc365a1479b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  connectedStorageNode: {fileID: 0}
   cycleTime: 3
   producing: 0
   connectedStorageNode: {fileID: 0}
   outputs: []
+--- !u!114 &114361586652529234
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1518631609042764}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 956546164355fda418f66fea5f96c491, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  employer: {fileID: 0}
+  contract:
+    issuer: {fileID: 0}
+    owner: {fileID: 0}
+    completingEntity: {fileID: 0}
+    jobBoard: {fileID: 0}

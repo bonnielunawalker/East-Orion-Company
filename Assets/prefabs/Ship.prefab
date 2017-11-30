@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4334638623667676}
   - component: {fileID: 114885153481644618}
   - component: {fileID: 58058368247095178}
+  - component: {fileID: 114890115360809574}
   m_Layer: 0
   m_Name: StorageNode
   m_TagString: Untagged
@@ -40,8 +41,8 @@ GameObject:
   - component: {fileID: 50987849204368308}
   - component: {fileID: 114640948947302872}
   - component: {fileID: 114772373424209770}
-  - component: {fileID: 114212768958706806}
   - component: {fileID: 61081941621439144}
+  - component: {fileID: 114005293638970370}
   m_Layer: 0
   m_Name: Ship
   m_TagString: Untagged
@@ -136,7 +137,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 3.02, y: 1.72}
   m_EdgeRadius: 0
---- !u!114 &114212768958706806
+--- !u!114 &114005293638970370
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -144,10 +145,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1658099358000814}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b77c6efbff30b8c45b2e345603162f25, type: 3}
+  m_Script: {fileID: 11500000, guid: 956546164355fda418f66fea5f96c491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ship: {fileID: 0}
+  employer: {fileID: 0}
+  contract:
+    issuer: {fileID: 0}
+    owner: {fileID: 0}
+    completingEntity: {fileID: 0}
+    jobBoard: {fileID: 0}
 --- !u!114 &114640948947302872
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -164,6 +170,7 @@ MonoBehaviour:
   destination: {fileID: 0}
   cargoCapacity: 20
   cargoHold: {fileID: 0}
+  employmentData: {fileID: 0}
 --- !u!114 &114772373424209770
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -194,12 +201,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee9a3e78f7d9537488f890a120b3d27e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  connectedStorageNode: {fileID: 0}
+  employmentData: {fileID: 0}
   resources: []
   maxUnits: 20
   usedCapacity: 0
   template:
     type: 0
     amount: 0
+--- !u!114 &114890115360809574
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1606309526188476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 956546164355fda418f66fea5f96c491, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  employer: {fileID: 0}
+  contract:
+    issuer: {fileID: 0}
+    owner: {fileID: 0}
+    completingEntity: {fileID: 0}
+    jobBoard: {fileID: 0}
 --- !u!212 &212088287074174560
 SpriteRenderer:
   m_ObjectHideFlags: 1

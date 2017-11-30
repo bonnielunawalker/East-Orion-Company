@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Ship : MonoBehaviour, IInspectable {
+public class Ship : MonoBehaviour, IInspectable
+{
 
-	public enum ShipState {
-		None,
+	public enum ShipState
+    {
+		Idle,
 		SearchingForJob,
 		Landed,
 		Pickup,
@@ -14,15 +16,12 @@ public class Ship : MonoBehaviour, IInspectable {
 
 	public ShipState state;
 
-	public FreightJob currentJob;
-
-	public StarSystem currentSystem;
+	public Star currentSystem;
 	public GameObject destination = null;
 
 	public int cargoCapacity = 20;
 
 	private SteeringBasics _steeringBasics;
-	private TradeUnit _tradeUnit;
 	private Rigidbody2D _rb;
 
 	private bool _selected;
@@ -31,99 +30,77 @@ public class Ship : MonoBehaviour, IInspectable {
 
 	public StorageNode cargoHold;
 
-	private Dictionary<Contract, ResourceReservation> _reservations = new Dictionary<Contract, ResourceReservation> ();
+	public Employee employmentData;
 
-	public void Start() {
-		state = ShipState.None;
+	public void Start()
+    {
+		state = ShipState.Idle;
 
-		currentSystem = FindObjectOfType<StarSystem> (); //TODO: find a way to do this better
+		currentSystem = FindObjectOfType<Star> (); //TODO: when additional starsystems are implemented this will not work.
 
 		_rb = GetComponent<Rigidbody2D> ();
-		_tradeUnit = GetComponent<TradeUnit> ();
 		_steeringBasics = GetComponent<SteeringBasics> ();
 		cargoHold = GetComponentInChildren<StorageNode> ();
 		_infoPanel = GameObject.FindGameObjectWithTag ("Infopanel");
+		employmentData = GetComponent<Employee>();
 	}
 
-	public void FixedUpdate () {
-		if (state == ShipState.None) {											// Do we have no state?
-			if (currentJob == null && state != ShipState.SearchingForJob) {			// Is it because we have no job?
-				state = ShipState.SearchingForJob;
-				StartCoroutine(FindFreightJob ());									// Get a new freight job.
-			} else {
-				return;
-			}
-		} else if (state == ShipState.Landed) {									// Are we landed?
-			_rb.velocity = Vector2.zero;
-			gameObject.transform.position = destination.transform.position;
-		} else if (state == ShipState.Pickup) {									// Are we picking up?
-			if (_atDestination) {													// Are we at our pickup destination?
-				_rb.velocity = Vector2.zero;
-				StorageNode n = destination.GetComponentInChildren<StorageNode>();
-				n.TransferReserved (cargoHold, _reservations[currentJob]);
-				_reservations.Remove (currentJob);
-				_atDestination = false;
-				destination = currentJob.issuer.gameObject.transform.parent.gameObject;	// Set our destination to the dropoff location. TODO: Actually pick up the goods.
-				state = ShipState.Dropoff;												// Update our shipstate
-			} else {																// Are we not at our pickup destination?
-				Arrive(destination);													// Move towards our destination.
-			}
-		} else if (state == ShipState.Dropoff) {								// Are we dropping off?
-			if (_atDestination) {													// Are we at our dropoff destination?
-				_rb.velocity = Vector2.zero;
-				state = ShipState.None;												// Set our state to none. TODO: Actually drop off the goods.
-				cargoHold.TransferResources(destination.GetComponentInChildren<StorageNode>(), new Resource(currentJob.resource, currentJob.amount));
-				currentSystem.JobBoard.CompleteJob(currentJob);
-				_atDestination = false;
-				currentJob = null;														// Finish our job.
-			} else {																// Are we not at our dropoff destination?
-				Arrive (destination);													// Move towards our destination.
-			}
-		}
-			
+	public void FixedUpdate ()
+    {
+        if (!employmentData.HasContract())
+            state = ShipState.Idle;
+        else if (employmentData.HasContract() && state == ShipState.Idle)
+        {
+            FreightContract c = (FreightContract)employmentData.contract;
+            state = ShipState.Pickup;
+            destination = c.reservation.location.gameObject;
+        }
 
+        if (state == ShipState.Pickup)
+        {
+            if (_atDestination)
+            {
+                _atDestination = false;
+                _rb.velocity = Vector2.zero;
+
+                FreightContract c = (FreightContract)employmentData.contract;
+                c.reservation.Resolve();
+
+                ResourceReservation newReservation = new ResourceReservation(c.reservation.reserver, c.reservation.resource, cargoHold);
+
+                destination = c.creator.GetComponent<IndustryNode>().connectedStorageNode.gameObject;
+
+                state = ShipState.Dropoff;
+            }
+            else
+                Arrive(destination);
+        }
+        else if (state == ShipState.Dropoff)
+        {
+            if (_atDestination)
+            {
+                _atDestination = false;
+                _rb.velocity = Vector2.zero;
+                destination = null;
+
+                FreightContract c = (FreightContract)employmentData.contract;
+
+                c.reservation.Resolve();
+                employmentData.contract.MarkAsComplete();
+
+                state = ShipState.Idle;
+            }
+            else
+                Arrive(destination);
+        }
+			
 		if (_selected)
 			_infoPanel.SendMessage("DisplayInfo", ObjectInfo());
 	}
 
-	private IEnumerator FindFreightJob() {
-		currentJob = null;
-		destination = null;
-
-		FreightJob jobBeingConsidered = currentSystem.TakeFreightJob ();
-
-		if (jobBeingConsidered != null) {
-			destination = _tradeUnit.FindProduct (jobBeingConsidered.resource);
-
-			if (destination == null) {
-				//Debug.LogWarning ("No goods of type required for job in system: " + System.Enum.GetName (typeof(ResourceType), jobBeingConsidered.resource));
-				currentSystem.JobBoard.AddJob (jobBeingConsidered);
-				yield return new WaitForSeconds (4);
-				state = ShipState.None;
-			} else {
-				StorageNode destinationStorageNode = destination.GetComponentInChildren<StorageNode> ();
-
-				int storedAmount = destinationStorageNode.QueryAmount (jobBeingConsidered.resource);
-
-				if (storedAmount > 0) {
-					_reservations.Add(jobBeingConsidered, destinationStorageNode.ReserveResources (new Resource (jobBeingConsidered.resource, storedAmount), this.gameObject));
-					currentJob = jobBeingConsidered;
-					state = ShipState.Pickup;
-				} else {
-					//Debug.Log ("No resource of type " + System.Enum.GetName (typeof(ResourceType), jobBeingConsidered.resource) + " stored in node");
-					currentSystem.JobBoard.AddJob (jobBeingConsidered);
-					yield return new WaitForSeconds (4);
-					state = ShipState.None;
-				}
-			}
-		} else {
-			yield return new WaitForSeconds (4);
-			state = ShipState.None;
-		}
-	}
-
-	private void Arrive(GameObject dest) {
-		Vector2 accel = new Vector2(0, 0); // TODO: Fix this up, we're creating a LOT of new Vector2s here...
+	private void Arrive(GameObject dest)
+    {
+		Vector2 accel = new Vector2(0, 0); // TODO: Tighten this up, we're creating a LOT of new Vector2s here...
 
 		if (destination != null)
 			accel = _steeringBasics.arrive (dest.transform.position);
@@ -132,27 +109,32 @@ public class Ship : MonoBehaviour, IInspectable {
 		_steeringBasics.lookWhereYoureGoing();
 	}
 
-	public void OnMouseOver() {
+	public void OnMouseOver()
+    {
 		_selected = true;
 		FindObjectOfType<InputController> ().inspectableSelected = true;
 	}
 
-	public void OnMouseExit() {
+	public void OnMouseExit()
+    {
 		_selected = false;
 		FindObjectOfType<InputController> ().inspectableSelected = false;
 	}
 
-	public void OnMouseDown () {
+	public void OnMouseDown ()
+    {
 		GameObject camera = GameObject.FindGameObjectWithTag ("MainCamera");
 		camera.SendMessage ("SetFollow", gameObject);
 	}
 
-	public void OnTriggerEnter2D(Collider2D c) {
+	public void OnTriggerEnter2D(Collider2D c)
+    {
 		if (c.gameObject == destination)
 			_atDestination = true;
 	}
 
-	public string ObjectInfo () {
+	public string ObjectInfo ()
+    {
 		string result = "Name: " + name + "\nState: " + System.Enum.GetName(typeof(ShipState), state); 
 
 		if (destination != null)

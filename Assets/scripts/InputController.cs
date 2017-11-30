@@ -2,20 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InputController : MonoBehaviour {
-
+public class InputController : MonoBehaviour
+{
 	private GameObject text;
 	private GameObject infoPanel;
 
 	public bool inspectableSelected;
 
-	public void Start () {
+	public void Start ()
+    {
 		text = GameObject.FindGameObjectWithTag ("Pause text").gameObject;
 		inspectableSelected = false;
 		infoPanel = GameObject.FindGameObjectWithTag ("Infopanel");
 	}
 
-	public void Update () {
+	public void Update ()
+    {
 		if (Input.GetKeyDown (KeyCode.Space) && Time.timeScale != 0)
 			Time.timeScale = 0;
 		else if (Input.GetKeyDown (KeyCode.Space) && Time.timeScale == 0)

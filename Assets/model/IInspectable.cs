@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IInspectable {
-	
+public interface IInspectable
+{
 	string ObjectInfo();
 }

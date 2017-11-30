@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraController : MonoBehaviour {
-
+public class CameraController : MonoBehaviour
+{
 	private Camera _camera;
 
 	[Range(1, 500)]
@@ -19,14 +19,17 @@ public class CameraController : MonoBehaviour {
 		_camera = GetComponent<Camera> ();
 	}
 
-	public void LateUpdate () {
+	public void LateUpdate ()
+    {
 		// If the middle mouse button is pressed, drag the camera around.
-		if (Input.GetMouseButtonDown (1)) {
+		if (Input.GetMouseButtonDown (1))
+        {
 			followTarget = null;
 			_dragOrigin = Input.mousePosition;
 		}
 
-		if (!Input.GetMouseButton (1)) {
+		if (!Input.GetMouseButton (1))
+        {
 			GetScroll();
 			Follow ();
 			return;
@@ -40,18 +43,21 @@ public class CameraController : MonoBehaviour {
 		Follow ();
 	}
 
-	private void GetScroll() {
+	private void GetScroll()
+    {
 		// Zoom in and out with the scroll wheel.
 		_camera.transform.Translate(new Vector3(0, 0, (Input.GetAxis ("Mouse ScrollWheel") * scrollSpeed) * (-_camera.transform.position.z / 50)));
 		if (_camera.transform.position.z > -8)
 			_camera.transform.position = new Vector3 (_camera.transform.position.x, _camera.transform.position.y, -8);
 	}
 
-	public void SetFollow(GameObject target) {
+	public void SetFollow(GameObject target)
+    {
 		followTarget = target;
 	}
 
-	private void Follow() {
+	private void Follow()
+    {
 		if (followTarget != null)
 			transform.position = new Vector3(followTarget.transform.position.x, followTarget.transform.position.y, transform.position.z);
 	}

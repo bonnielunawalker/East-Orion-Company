@@ -21,8 +21,8 @@ GameObject:
   - component: {fileID: 4659095329347374}
   - component: {fileID: 212533414556617114}
   - component: {fileID: 50597213494788716}
-  - component: {fileID: 114926312889810920}
   - component: {fileID: 58109789779601422}
+  - component: {fileID: 114840081512601568}
   m_Layer: 0
   m_Name: Star
   m_TagString: Untagged
@@ -78,7 +78,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 16
---- !u!114 &114926312889810920
+--- !u!114 &114840081512601568
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -86,7 +86,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1424297377406300}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a84328d62153ffc4c973ee2d33656291, type: 3}
+  m_Script: {fileID: 11500000, guid: b8654b81516f98c45a14c0f8922055fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   planetTemplate: {fileID: 1762222212941510, guid: 33c07884922174e428e47259d5d92a22,
@@ -109,12 +109,15 @@ MonoBehaviour:
   - {fileID: 1517200931911688, guid: 9ac98a6fee8077b4090bfd0ce113a8d2, type: 2}
   - {fileID: 1124838369414022, guid: 9960e67bb1a6e8148a2d15a68d08492d, type: 2}
   - {fileID: 1552667318815680, guid: 33528ff2ee334404da4b17ddf6da5494, type: 2}
-  star: {fileID: 4659095329347374}
+  companyTemplate: {fileID: 1583058044750426, guid: dca20380e8019e84c9c84874e3831c34,
+    type: 2}
+  company: {fileID: 0}
+  star: {fileID: 0}
   planetSeperationDistance: 50
-  planetSpawnMax: 20
-  planetSpawnMin: 15
+  planetSpawnMax: 10
+  planetSpawnMin: 0
   moonDistance: 7
-  numOfShips: 50
+  numOfShips: 20
   possiblePlanetSprites:
   - {fileID: 21300000, guid: 9047fabb2e8e4e14a90367b4076b2153, type: 3}
   - {fileID: 21300000, guid: 68ed8c7974a992f4296cfe91ffb4c10d, type: 3}
@@ -136,10 +139,9 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 7ab2bdd91d3a4014692b3552373f2874, type: 3}
   - {fileID: 21300000, guid: c92f2adbd729d154f98bc10d7d937372, type: 3}
   - {fileID: 21300000, guid: d56ba7369c5a9414fa2f1f594c671dc1, type: 3}
+  - {fileID: 21300000, guid: d9dba0e8674ec7143af6a0f07d2c3175, type: 3}
   - {fileID: 21300000, guid: c32f5de6c4fa65849a60b7d6448f5ea5, type: 3}
   - {fileID: 21300000, guid: 028547b7e5f99774f8a85c346ad49ba4, type: 3}
-  - {fileID: 21300000, guid: d9dba0e8674ec7143af6a0f07d2c3175, type: 3}
-  - {fileID: 21300000, guid: df32092836f7a4848ae3c277f5321053, type: 3}
   - {fileID: 21300000, guid: 9e7bbf1956b593040b643a7a21f2e184, type: 3}
   - {fileID: 21300000, guid: d4936e7298b7d104b82963593b516d79, type: 3}
   - {fileID: 21300000, guid: bf97d673e960eb74ebd206d637ff9a5a, type: 3}

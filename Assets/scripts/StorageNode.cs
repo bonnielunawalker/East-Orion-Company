@@ -2,37 +2,52 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StorageNode : MonoBehaviour, IndustryNode {
+public class StorageNode : IndustryNode
+{
 
 	[SerializeField]
 	public List<Resource> resources = new List<Resource> ();
-	public List<ResourceReservation> reservations = new List<ResourceReservation> ();
+	public Dictionary<StorageNode, ResourceReservation> reservations = new Dictionary<StorageNode, ResourceReservation>();
 	public int maxUnits;
 	public int usedCapacity = 0;
 	public Resource template;
 
-	public StorageNode ConnectedStorageNode { 
-		get { return this; }
+	public void Start()
+    {
+		employmentData = GetComponent<Employee> ();
+		connectedStorageNode = this;
 	}
 
-	public int CapacityRemaining() {
+	public int CapacityRemaining()
+    {
 		return maxUnits - usedCapacity;
 	}
 
-	public bool HasResource(ResourceType resource, int amount) {
-		// Loop through all resources that are children of this storage node and check if they match the type and have the required amount.
-		foreach (Resource r in resources) {
-			if (r.type == resource && r.amount >= amount)
-				return true;
-		}
-			
-
-		return false;
+	public override bool SuppliesResource(ResourceType type)
+    {
+		return resources.Exists (r => r.type == type);
 	}
 
-	public Resource Take(Resource resource) {
-		foreach (Resource r in resources) {
-			if (r.type == resource.type) {
+	public override bool HasResourceAmount(ResourceType type, int amount)
+    {
+		foreach (Resource r in resources)
+        {
+			if (r.type == type && r.amount == amount)
+            {
+				return true;
+			}
+		}
+
+		return false;
+
+		//return resources.Exists (r => r.type == type && r.amount >= amount);
+	}
+
+	public Resource Take(Resource resource)
+    {
+		foreach (Resource r in resources)
+			if (r.type == resource.type)
+            {
 				r.amount -= resource.amount;
 
 				// Destroy this resource pool if no resources remain.
@@ -41,30 +56,32 @@ public class StorageNode : MonoBehaviour, IndustryNode {
 
 				return resource;
 			}
-		}
 
 		Debug.LogError ("No resource could be removed");
 		return null; // TODO: Make this throw an error of some sort instead of returning a null object.
 	}
 
-	public void Put(Resource resource) {
-		if (resource.amount > CapacityRemaining()) {
+	public void Put(Resource resource)
+    {
+		if (resource.amount > CapacityRemaining())
+        {
 			Debug.LogError ("Trying to put " + resource.amount + " of " + System.Enum.GetName(typeof(ResourceType), resource.type) + " when only " + CapacityRemaining() + " units of space remain.");
 			return;
 		}
 
-		foreach (Resource r in resources) {
-			if (r.type == resource.type) {
+		foreach (Resource r in resources)
+			if (r.type == resource.type)
+            {
 				r.amount += resource.amount;
 				return;
 			}
-		}
 					
 		// Create a new resource pool of this type doesn't exist in this node's storage.
 		resources.Add (resource);
 	}
 
-	public void TransferResources(StorageNode to, Resource resource) {
+	public void TransferResources(StorageNode to, Resource resource)
+    {
 		int storedAmount = QueryAmount (resource.type);
 
 		if (storedAmount >= resource.amount)
@@ -73,56 +90,52 @@ public class StorageNode : MonoBehaviour, IndustryNode {
 			Debug.LogWarning("Not enough units of " + System.Enum.GetName(typeof(ResourceType), resource.type) + ". " + resource.amount + " requested, only " + storedAmount + " stored.");
 	}
 
-
-	public void TransferReserved(StorageNode to, ResourceReservation reservation) {
-		ReturnReservationToPool (reservation);
-		TransferResources (to, reservation.resource);
-	}
-
-	private void ReturnReservationToPool(ResourceReservation reservation) {
-		Put (reservation.resource);
-		reservations.Remove (reservation);
-	}
-
-	public bool SuppliesResource(ResourceType type) {
-		return resources.Exists (resource => resource.type == type);
-	}
-
-	public int QueryAmount(ResourceType type) {
+	public int QueryAmount(ResourceType type)
+    {
 		if (resources.Exists (resource => resource.type == type))
 			return resources.Find (resource => resource.type == type).amount;
 		else
 			return 0;
 	}
 
-	public ResourceReservation ReserveResources(Resource resource, GameObject reserver) {
-		Debug.Log ("Reserving " + resource.amount + " units of " + System.Enum.GetName (typeof(ResourceType), resource.type));
-		ResourceReservation newReservation = new ResourceReservation (Take (resource), reserver);
-		reservations.Add (newReservation);
+	public ResourceReservation MakeReservation (StorageNode reserver, Resource resource)
+    {
+		Take (resource);
+		ResourceReservation newReservation = new ResourceReservation (reserver, resource, this);
+		reservations.Add(reserver, newReservation);
 		return newReservation;
 	}
 
-	public bool ReservationExists(ResourceType type, int amount, GameObject reserver) {
-		foreach (ResourceReservation reservation in reservations) {
-			if (reservation.Matches (type, amount, reserver)) {
-				return true;
-			}
-		}
-
-		Debug.Log ("No reservation matching the request was found.");
-		return false;
+	public void CancelReservation(ResourceReservation reservation)
+    {
+		Put (reservation.resource);
+		reservations.Remove (reservation.reserver);
 	}
 
-	// Overload that takes a resource instead of type and amount.
-	public bool ReservationExists(Resource resource, GameObject reserver) {
-		return ReservationExists (resource.type, resource.amount, reserver);
+	public List<ResourceReservation> FindReservations(StorageNode reserver)
+    {
+		List<ResourceReservation> result = new List<ResourceReservation> ();
+
+		foreach (KeyValuePair<StorageNode, ResourceReservation> kvp in reservations)
+			if (kvp.Key == reserver)
+				result.Add (kvp.Value);
+
+		return result;
 	}
 
-	public ResourceReservation GetReservation (Resource resource, GameObject reserver) {
-		return reservations.Find(reservation => reservation.Matches(resource.type, resource.amount, reserver));
+	public bool HasReservation(StorageNode reserver)
+    {
+		return reservations.ContainsKey (reserver);
 	}
 
-	public string ObjectInfo() {
+	public void TransferReservedResources(ResourceReservation reservation)
+    {
+		reservations.Remove (reservation.reserver);
+		reservation.reserver.Put (reservation.resource);
+	}
+
+	public override string ObjectInfo()
+    {
 		string result = "StorageNode\n";
 
 		foreach (Resource resource in resources)

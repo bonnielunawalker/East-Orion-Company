@@ -59,3 +59,23 @@ Factory Update()
      - Start producing!
    - Have our requirements not been met?
      - Post some jobs!
+
+
+THURSDAY
+
+Freight contracts should already have a resource reservation
+------------------------------------------------------------
+Factories are responsible for reserving resources when they ask their company to issue a contract
+Reservations are built into the contract
+
+***We need an easy way for a game entity to scan a system and see if the resources it needs are there***
+
+Freighters just pick up the reservation
+
+Companies need to push jobs to their subordinates
+-------------------------------------------------
+Queue-like data structure?
+Dequeue first contract of a given type?
+
+Company holds collection of all ships that have no contract.
+Company selects a ship based on proximity to the contract.

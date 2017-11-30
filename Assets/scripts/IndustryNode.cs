@@ -2,8 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IndustryNode : IInspectable {
-	StorageNode ConnectedStorageNode { get; } 	// Basically we need this because we need an easy way of accessing the storage of an industrynode without knowing what type of node it is.
-												// If the type of the industry node is a StorageNode then this will simply point to itself.
-	bool SuppliesResource(ResourceType type);
+public abstract class IndustryNode : MonoBehaviour, IInspectable
+{
+	public StorageNode connectedStorageNode;
+	public Employee employmentData;
+
+	public abstract bool SuppliesResource (ResourceType type);
+	public abstract bool HasResourceAmount (ResourceType type, int amount);
+
+	public abstract string ObjectInfo();
 }

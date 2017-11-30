@@ -2,15 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InfoPanelController : MonoBehaviour {
-
+public class InfoPanelController : MonoBehaviour
+{
 	private UnityEngine.UI.Text _textField;
 
-	public void Start() {
+	public void Start()
+    {
 		_textField = gameObject.GetComponent<UnityEngine.UI.Text> ();
 	}
 
-	public void DisplayInfo(string info) {
+	public void DisplayInfo(string info)
+    {
 		_textField.text = info;
 	}
 }
