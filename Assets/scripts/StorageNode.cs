@@ -35,8 +35,6 @@ public class StorageNode : IndustryNode
 				return true;
 
 		return false;
-
-		//return resources.Exists (r => r.type == type && r.amount >= amount);
 	}
 
 	public Resource Take(Resource resource)
