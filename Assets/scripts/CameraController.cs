@@ -26,21 +26,40 @@ public class CameraController : MonoBehaviour
         {
 			followTarget = null;
 			_dragOrigin = Input.mousePosition;
-		}
 
-		if (!Input.GetMouseButton (1))
-        {
-			GetScroll();
+			Vector3 pos = _camera.ScreenToViewportPoint (Input.mousePosition - _dragOrigin);
+			Vector3 move = new Vector3 (-pos.x * dragSpeed, -pos.y * dragSpeed, 0);
+			_camera.transform.Translate (move * (-_camera.transform.position.z / 10), Space.World);
+
+			GetScroll ();
 			Follow ();
 			return;
 		}
-			
-		Vector3 pos = _camera.ScreenToViewportPoint (Input.mousePosition - _dragOrigin);
-		Vector3 move = new Vector3 (-pos.x * dragSpeed, -pos.y * dragSpeed, 0);
-		_camera.transform.Translate (move * (-_camera.transform.position.z / 10), Space.World);
+		else
+		{
+			GetScroll();
+			Follow ();
 
-		GetScroll ();
-		Follow ();
+			Vector2 pan = new Vector2();
+
+			// Use WASD to pan the camera around
+			if (Input.GetKey(KeyCode.A))
+				pan.x -= 0.5f;
+
+			if (Input.GetKey(KeyCode.D))
+				pan.x += 0.5f;
+
+			if (Input.GetKey(KeyCode.W))
+				pan.y += 0.5f;
+
+			if (Input.GetKey(KeyCode.S))
+				pan.y -= 0.5f;
+
+			if (pan.x != 0 || pan.y != 0)
+				followTarget = null;
+
+			_camera.transform.Translate (pan * (-_camera.transform.position.z / 10), Space.World);
+		}
 	}
 
 	private void GetScroll()

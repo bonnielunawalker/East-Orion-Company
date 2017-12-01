@@ -41,7 +41,7 @@ public class Planet : MonoBehaviour, IInspectable
 		_infoPanel = GameObject.FindGameObjectWithTag ("Infopanel");
 	}
 
-	void FixedUpdate ()
+	void Update ()
     {
 		if (_selected)
 			_infoPanel.SendMessage("DisplayInfo", ObjectInfo());

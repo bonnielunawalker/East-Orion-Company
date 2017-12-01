@@ -45,7 +45,13 @@ public class Ship : MonoBehaviour, IInspectable
 		employmentData = GetComponent<Employee>();
 	}
 
-	public void FixedUpdate ()
+	public void Update()
+	{
+		if (_selected)
+			_infoPanel.SendMessage("DisplayInfo", ObjectInfo());
+	}
+
+	public void FixedUpdate()
     {
         if (!employmentData.HasContract())
             state = ShipState.Idle;
@@ -94,9 +100,6 @@ public class Ship : MonoBehaviour, IInspectable
             else
                 Arrive(destination);
         }
-			
-		if (_selected)
-			_infoPanel.SendMessage("DisplayInfo", ObjectInfo());
 	}
 
 	private void Arrive(GameObject dest)
