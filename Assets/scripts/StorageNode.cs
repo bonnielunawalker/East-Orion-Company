@@ -7,7 +7,7 @@ public class StorageNode : IndustryNode
 
 	[SerializeField]
 	public List<Resource> resources = new List<Resource> ();
-	public Dictionary<StorageNode, ResourceReservation> reservations = new Dictionary<StorageNode, ResourceReservation>();
+	public List<ResourceReservation> reservations = new List<ResourceReservation>();
 	public int maxUnits;
 	public int usedCapacity = 0;
 	public Resource template;
@@ -94,37 +94,21 @@ public class StorageNode : IndustryNode
 
 	public ResourceReservation MakeReservation (StorageNode reserver, Resource resource)
     {
-		ResourceReservation newReservation = new ResourceReservation (reserver, Take(resource), this);
-		reservations.Add(reserver, newReservation);
+		ResourceReservation newReservation = new ResourceReservation (Take(resource), this);
+		reservations.Add(newReservation);
 		return newReservation;
 	}
 
 	public void CancelReservation(ResourceReservation reservation)
     {
 		Put (reservation.resource);
-		reservations.Remove (reservation.reserver);
+		reservations.Remove (reservation);
 	}
 
-	public List<ResourceReservation> FindReservations(StorageNode reserver)
+	public void TransferReservedResources(ResourceReservation reservation, StorageNode destinationNode)
     {
-		List<ResourceReservation> result = new List<ResourceReservation> ();
-
-		foreach (KeyValuePair<StorageNode, ResourceReservation> kvp in reservations)
-			if (kvp.Key == reserver)
-				result.Add (kvp.Value);
-
-		return result;
-	}
-
-	public bool HasReservation(StorageNode reserver)
-    {
-		return reservations.ContainsKey (reserver);
-	}
-
-	public void TransferReservedResources(ResourceReservation reservation)
-    {
-		reservations.Remove (reservation.reserver);
-		reservation.reserver.Put (reservation.resource);
+		reservations.Remove (reservation);
+		destinationNode.Put (reservation.resource);
 	}
 
 	public override string ObjectInfo()

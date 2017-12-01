@@ -72,8 +72,8 @@ public class Ship : MonoBehaviour, IInspectable
                 FreightContract c = (FreightContract)employmentData.contract;
 
                 Resource r = c.reservation.resource;
-                c.reservation.Resolve();
-                ResourceReservation newReservation = new ResourceReservation(c.creator.GetComponent<IndustryNode>().connectedStorageNode, r, cargoHold);
+				c.reservation.Resolve(cargoHold);
+				ResourceReservation newReservation = cargoHold.MakeReservation(c.reservation.location, c.reservation.resource);
                 c.reservation = newReservation;
 
                 destination = c.creator.GetComponent<IndustryNode>().connectedStorageNode.gameObject;
@@ -92,7 +92,7 @@ public class Ship : MonoBehaviour, IInspectable
                 _rb.velocity = Vector2.zero;
 
                 FreightContract f = (FreightContract)employmentData.contract;
-                f.reservation.Resolve();
+				f.reservation.Resolve(f.creator.GetComponent<IndustryNode>().connectedStorageNode);
                 employmentData.contract.MarkAsComplete();
 
                 state = ShipState.Idle;
