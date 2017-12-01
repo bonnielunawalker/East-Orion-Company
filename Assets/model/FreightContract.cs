@@ -14,14 +14,15 @@ public class FreightContract : Contract
 		base.jobBoard = board;
 	}
 
-	public override void MarkAsAccepted (Company acceptingCompany)
+	public override void MarkAsAccepted ()
     {
-		jobBoard.RemoveContract (this);
+		return;
 	}
 
 	public override void MarkAsComplete ()
     {
 		owner.acceptedContracts.Remove (this);
+		issuer.outstandingContracts.Remove (this);
 		NotifyOfCompletion ();
         completingEntity.contract = null;
 	}

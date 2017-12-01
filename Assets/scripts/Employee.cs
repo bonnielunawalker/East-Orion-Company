@@ -22,7 +22,7 @@ public class Employee : MonoBehaviour
 
     public bool CanAcceptContract(Contract c)
     {
-        return acceptedContracts.Contains(c.GetType());
+		return acceptedContracts.Contains(c.GetType()) && !HasContract();
     }
 
     public bool HasContract()

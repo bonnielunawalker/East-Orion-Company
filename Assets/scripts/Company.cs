@@ -8,15 +8,12 @@ public class Company : MonoBehaviour
 
 	public List<Contract> outstandingContracts = new List<Contract>();
 	public List<Contract> acceptedContracts = new List<Contract>();
-    private List<Contract> _acceptedContractRemovalBuffer = new List<Contract>();
+	private List<Contract> _acceptedContractsRemovalBuffer = new List<Contract>();
+	private List<Contract> _assignedContractsRemovalBuffer = new List<Contract>();
 
-	public List<Employee> employees = new List<Employee> ();
+	public List<Employee> employees = new List<Employee>();
 
 	public bool searchingForContracts = false;
-
-	// This is for looping through a list of contracts and accepting them.
-	// Since the iteration and the removal happen in different methods, we need a list to store them in accessable by both.
-	private List<Contract> _contractsToRemove = new List<Contract>();
 
 	public void Update()
     {
@@ -25,10 +22,10 @@ public class Company : MonoBehaviour
 
         AssignContracts();
 
-        foreach (Contract c in _acceptedContractRemovalBuffer)
+        foreach (Contract c in _assignedContractsRemovalBuffer)
             acceptedContracts.Remove(c);
 
-        _acceptedContractRemovalBuffer.Clear();
+        _assignedContractsRemovalBuffer.Clear();
 	}
 
 	public void AddEmployee(Employee e)
@@ -37,7 +34,9 @@ public class Company : MonoBehaviour
 		e.employer = this;
 	}
 		
-	 // Methods relating to contract behaviour
+	 /*
+	  * Contract behaviour methods
+	  */
 
 	public IEnumerator SearchForValidContracts()
     {
@@ -45,13 +44,16 @@ public class Company : MonoBehaviour
 		JobBoard[] jobBoards = FindObjectsOfType<JobBoard> ();
 
 		foreach (JobBoard jb in jobBoards)
-			foreach (Contract c in jb.Contracts)
-				ConsiderAcceptingContract (c);
+			if (jb.Contracts.Count > 0)
+				foreach (Contract c in jb.Contracts)
+					ConsiderAcceptingContract (c);			
 
-		foreach (Contract c in _contractsToRemove)
+		foreach (Contract c in _acceptedContractsRemovalBuffer)
 			c.jobBoard.RemoveContract (c);
 
-		_contractsToRemove.Clear();
+		_acceptedContractsRemovalBuffer.Clear();
+
+		Debug.Log (acceptedContracts.Count);
 
 		yield return new WaitForSeconds (5f);
 		searchingForContracts = false;
@@ -62,49 +64,48 @@ public class Company : MonoBehaviour
         foreach (Employee e in employees)
             if (!e.HasContract() && acceptedContracts.Count > 0)
                 foreach (Contract c in acceptedContracts)
-                    if (!_acceptedContractRemovalBuffer.Contains(c) && e.CanAcceptContract(c))
-                    {
+                    if (!_assignedContractsRemovalBuffer.Contains(c) && e.CanAcceptContract(c))
                         Assign(e, c);
-                        return;
-                    }
     }
 
 	// Recieve the contract for consideration for issuing.
 	// For now this just means posting the contract. Later, more restrictions and checks can be added.
 	public void ConsiderIssuingContract(Contract c)
     {
-		IssueContract (c);
+		if (true)
+			IssueContract(c);
 	}
 
 	// Actually issue the contract to the job board.
 	public void IssueContract(Contract c)
     {
-		c.jobBoard.AddContract (c);
-		outstandingContracts.Add (c);
+		c.jobBoard.AddContract(c);
+		outstandingContracts.Add(c);
 	}
-
-	// As with ConsiderIssuingContract, right now this means just accepting the contract.
-	// However in future the company will make a value assessment on the contract before accepting it.
+		
 	public void ConsiderAcceptingContract(Contract c)
     {
-		AcceptContract (c);
+		foreach (Employee e in employees)
+			if (e.CanAcceptContract(c))
+				AcceptContract (c);
 	}
 
 	public void AcceptContract(Contract c)
     {
-		_contractsToRemove.Add (c);
+		_acceptedContractsRemovalBuffer.Add (c);
 		c.owner = this;
 		acceptedContracts.Add (c);
+		c.MarkAsAccepted ();
 	}
 
 	public void Assign(Employee assignee, Contract c)
     {
 		assignee.contract = c;
 		c.completingEntity = assignee;
-        _acceptedContractRemovalBuffer.Add(c);
+		_assignedContractsRemovalBuffer.Add(c);
     }
 
-    public void NotifyOfContractCompletion (Contract c)
+    public void NotifyOfContractCompletion(Contract c)
     {
 		outstandingContracts.Remove (c);
 	}

@@ -11,7 +11,7 @@ public abstract class Contract
 	public Employee completingEntity;
 	public JobBoard jobBoard;
 
-    public abstract void MarkAsAccepted(Company acceptingCompany);
+    public abstract void MarkAsAccepted();
 
     public abstract void MarkAsComplete();
 
