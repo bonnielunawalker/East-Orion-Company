@@ -243,7 +243,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 262218582}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalPosition: {x: 0, y: 0.97499084, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1657913406}
@@ -251,8 +251,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0.5}
-  m_SizeDelta: {x: 150, y: 51}
+  m_AnchoredPosition: {x: 0, y: 0.97499025}
+  m_SizeDelta: {x: 206.7, y: 50.05}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &262218584
 MonoBehaviour:
@@ -312,7 +312,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 355181360}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 182.97998, y: -5.25, z: 0}
+  m_LocalPosition: {x: 189.97998, y: -62.75, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1987726160}
@@ -457,7 +457,7 @@ RectTransform:
   m_GameObject: {fileID: 1158493403}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 80}
-  m_LocalScale: {x: 0.64724916, y: 0.64724916, z: 0.64724916}
+  m_LocalScale: {x: 0.47169814, y: 0.47169814, z: 0.47169814}
   m_Children:
   - {fileID: 1657913406}
   - {fileID: 355181361}
@@ -612,7 +612,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1657913405}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -342.75, y: 129.20001, z: 0}
+  m_LocalPosition: {x: -321.1, y: 187.9, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 262218583}
@@ -621,8 +621,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 74.75, y: -25.299988}
-  m_SizeDelta: {x: 149.5, y: 50.600006}
+  m_AnchoredPosition: {x: 103.4, y: -24.1}
+  m_SizeDelta: {x: 206.7, y: 48.1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1657913407
 MonoBehaviour:
