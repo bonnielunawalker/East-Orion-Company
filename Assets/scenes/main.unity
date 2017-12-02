@@ -312,7 +312,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 355181360}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 189.97998, y: -62.75, z: 0}
+  m_LocalPosition: {x: 195.97998, y: -61.75, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1987726160}
@@ -457,7 +457,7 @@ RectTransform:
   m_GameObject: {fileID: 1158493403}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 80}
-  m_LocalScale: {x: 0.47169814, y: 0.47169814, z: 0.47169814}
+  m_LocalScale: {x: 0.4739337, y: 0.4739337, z: 0.4739337}
   m_Children:
   - {fileID: 1657913406}
   - {fileID: 355181361}
@@ -521,7 +521,12 @@ Prefab:
     - target: {fileID: 114840081512601568, guid: fc1f450c272f8354ca506f719c72301d,
         type: 2}
       propertyPath: numOfShips
-      value: 20
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 58109789779601422, guid: fc1f450c272f8354ca506f719c72301d,
+        type: 2}
+      propertyPath: m_IsTrigger
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: fc1f450c272f8354ca506f719c72301d, type: 2}
@@ -612,7 +617,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1657913405}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -321.1, y: 187.9, z: 0}
+  m_LocalPosition: {x: -327.1, y: 186.9, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 262218583}

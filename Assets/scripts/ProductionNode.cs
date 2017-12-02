@@ -68,7 +68,10 @@ public class ProductionNode : IndustryNode
                 continue;
             // Only add a new resource requirement if one for this resource does not already exist and we have not already made a contract
             else if (!_requiredResources.Exists(r => r.type == resource.type) && !_requestedResourceTypes.Exists(r => r == resource.type))
-                _requiredResources.Add(new Resource(resource.type, resource.amount));
+			{
+				_requiredResources.Add(new Resource(resource.type, resource.amount));
+				Debug.Log("Not enough resources, I should post a contract.");
+			}
     }
 
     public override bool SuppliesResource(ResourceType type)
@@ -93,8 +96,6 @@ public class ProductionNode : IndustryNode
 
 	private void UnreserveResources()
     {
-		List<Resource> temp = new List<Resource> ();
-
         foreach (Resource r in _reservedResources)
             connectedStorageNode.Put(r);
 

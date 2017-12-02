@@ -53,20 +53,18 @@ public class Company : MonoBehaviour
 
 		_acceptedContractsRemovalBuffer.Clear();
 
-		Debug.Log (acceptedContracts.Count);
-
 		yield return new WaitForSeconds (5f);
 		searchingForContracts = false;
 	}
 
     public void AssignContracts()
-    {
-        foreach (Employee e in employees)
-            if (!e.HasContract() && acceptedContracts.Count > 0)
-                foreach (Contract c in acceptedContracts)
-                    if (!_assignedContractsRemovalBuffer.Contains(c) && e.CanAcceptContract(c))
-                        Assign(e, c);
-    }
+	{
+		foreach (Employee e in employees)
+			if (!e.HasContract () && acceptedContracts.Count > 0)
+				foreach (Contract c in acceptedContracts)
+					if (!_assignedContractsRemovalBuffer.Contains (c) && e.CanAcceptContract (c))
+						Assign (e, c);
+	}
 
 	// Recieve the contract for consideration for issuing.
 	// For now this just means posting the contract. Later, more restrictions and checks can be added.
@@ -87,7 +85,10 @@ public class Company : MonoBehaviour
     {
 		foreach (Employee e in employees)
 			if (e.CanAcceptContract(c))
+			{
 				AcceptContract (c);
+				return;
+			}
 	}
 
 	public void AcceptContract(Contract c)

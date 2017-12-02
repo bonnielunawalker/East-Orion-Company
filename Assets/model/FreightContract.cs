@@ -25,6 +25,7 @@ public class FreightContract : Contract
 		issuer.outstandingContracts.Remove (this);
 		NotifyOfCompletion ();
         completingEntity.contract = null;
+		Debug.Log("Freight contract complete!");
 	}
 
 	public override void MarkAsUnableToComplete ()

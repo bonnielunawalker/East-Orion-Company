@@ -149,11 +149,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   employer: {fileID: 0}
-  contract:
-    issuer: {fileID: 0}
-    owner: {fileID: 0}
-    completingEntity: {fileID: 0}
-    jobBoard: {fileID: 0}
 --- !u!114 &114640948947302872
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -221,11 +216,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   employer: {fileID: 0}
-  contract:
-    issuer: {fileID: 0}
-    owner: {fileID: 0}
-    completingEntity: {fileID: 0}
-    jobBoard: {fileID: 0}
 --- !u!212 &212088287074174560
 SpriteRenderer:
   m_ObjectHideFlags: 1

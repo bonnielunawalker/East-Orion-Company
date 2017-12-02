@@ -71,7 +71,6 @@ public class Ship : MonoBehaviour, IInspectable
 
                 FreightContract c = (FreightContract)employmentData.contract;
 
-                Resource r = c.reservation.resource;
 				c.reservation.Resolve(cargoHold);
 				ResourceReservation newReservation = cargoHold.MakeReservation(c.reservation.location, c.reservation.resource);
                 c.reservation = newReservation;
