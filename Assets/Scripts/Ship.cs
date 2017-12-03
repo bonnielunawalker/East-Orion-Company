@@ -20,7 +20,7 @@ public class Ship : MonoBehaviour, IInspectable
 	public int maxAcceleration;
 	public int maneuverability;
 	public int cargoCapacity;
-	public string spritePath;
+	public string spriteName;
 
 	public ShipState state;
 
@@ -55,6 +55,7 @@ public class Ship : MonoBehaviour, IInspectable
 		_steeringBasics.maxAcceleration = maxAcceleration;
 		_steeringBasics.turnSpeed = maneuverability;
 		cargoHold.maxUnits = cargoCapacity;
+        GetComponent<SpriteRenderer>().sprite = FindObjectOfType<AssetLoader>().sprites[spriteName];
 	}
 
 	public void Update()

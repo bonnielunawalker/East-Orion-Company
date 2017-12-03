@@ -3,5 +3,6 @@
 	"maxSpeed": 8,
 	"maxAcceleration": 2,
 	"maneuverability": 30,
-	"cargoCapacity": 20
+	"cargoCapacity": 20,
+    "spriteName": "wship1.png"
 }

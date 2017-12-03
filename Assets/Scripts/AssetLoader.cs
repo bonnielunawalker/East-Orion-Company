@@ -36,13 +36,15 @@ public class AssetLoader : MonoBehaviour
 	public void LoadSprite(FileInfo file)
 	{
 		WWW www = new WWW ("file://" + file.FullName.ToString ());
+        float pixelsPerUnit = 200f;
 
-		byte[] data = File.ReadAllBytes(file.FullName.ToString ());
-		Texture2D texture = new Texture2D(64, 64, TextureFormat.ARGB32, false);
-		texture.LoadImage (data);
-		Rect rect = new Rect(0, 0, www.texture.width, www.texture.height);
+        Texture2D texture = new Texture2D(www.texture.width, www.texture.height);
+        www.LoadImageIntoTexture(texture);
 
-		Sprite s = Sprite.Create(www.texture, rect, rect.position);
-		sprites.Add(file.Name, s);
+        Rect rect = new Rect(0, 0, texture.width, texture.height);
+
+        Sprite s = Sprite.Create(texture, rect, new Vector2(0.5f, 0.5f), pixelsPerUnit);
+
+        sprites.Add(file.Name, s);
 	}
 }
