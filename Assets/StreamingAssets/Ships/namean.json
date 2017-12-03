@@ -1,0 +1,7 @@
+{
+	"description": "The Namean class courier is a common sight throughout the East Orion cluster. Typically seen shuttling light goods from planet to planet, the Namean class is the mainstay of many corporate fleets.",
+	"maxSpeed": 8,
+	"maxAcceleration": 2,
+	"maneuverability": 30,
+	"cargoCapacity": 20
+}

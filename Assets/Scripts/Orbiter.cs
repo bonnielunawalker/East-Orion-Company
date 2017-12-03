@@ -14,7 +14,7 @@ public class Orbiter : MonoBehaviour
 
 	public Orbiter moonPrefab;
 
-	public void Start ()
+	public void Start()
     {
 		_gravitationalConstant = 1000;
 		_parentBody = transform.parent.gameObject;
@@ -22,12 +22,12 @@ public class Orbiter : MonoBehaviour
 		_parentRb = _parentBody.GetComponent<Rigidbody2D> ();
 	}
 
-	public void FixedUpdate ()
+	public void FixedUpdate()
     {
 		_rb.velocity = CircularOrbit () + _parentRb.velocity;
 	}
 
-	private Vector2 CircularOrbit ()
+	private Vector2 CircularOrbit()
     {
 		Vector2 dist = new Vector2 (transform.position.x - _parentBody.transform.position.x, transform.position.y - _parentBody.transform.position.y);
 		float r = dist.magnitude;
@@ -40,7 +40,7 @@ public class Orbiter : MonoBehaviour
 		return pdist * f;
 	}
 
-	public void OnMouseDown ()
+	public void OnMouseDown()
     {
 		GameObject camera = GameObject.FindGameObjectWithTag ("MainCamera");
 		camera.SendMessage ("SetFollow", gameObject);

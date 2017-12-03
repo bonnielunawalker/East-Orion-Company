@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class Ship : MonoBehaviour, IInspectable
 {
-
 	public enum ShipState
     {
 		Idle,
@@ -14,12 +14,18 @@ public class Ship : MonoBehaviour, IInspectable
 		Dropoff
 	}
 
+	// Fields set from JSON files
+	public string description;
+	public int maxSpeed;
+	public int maxAcceleration;
+	public int maneuverability;
+	public int cargoCapacity;
+	public string spritePath;
+
 	public ShipState state;
 
 	public Star currentSystem;
 	public GameObject destination = null;
-
-	public int cargoCapacity = 20;
 
 	private SteeringBasics _steeringBasics;
 	private Rigidbody2D _rb;
@@ -43,6 +49,12 @@ public class Ship : MonoBehaviour, IInspectable
 		cargoHold = GetComponentInChildren<StorageNode> ();
 		_infoPanel = GameObject.FindGameObjectWithTag ("Infopanel");
 		employmentData = GetComponent<Employee>();
+
+		// Update components based on JSON input
+		_steeringBasics.maxVelocity = maxSpeed;
+		_steeringBasics.maxAcceleration = maxAcceleration;
+		_steeringBasics.turnSpeed = maneuverability;
+		cargoHold.maxUnits = cargoCapacity;
 	}
 
 	public void Update()

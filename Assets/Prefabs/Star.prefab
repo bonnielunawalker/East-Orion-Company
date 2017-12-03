@@ -72,7 +72,7 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -89,6 +89,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8654b81516f98c45a14c0f8922055fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  planets: []
+  jobBoard: {fileID: 0}
   planetTemplate: {fileID: 1762222212941510, guid: 33c07884922174e428e47259d5d92a22,
     type: 2}
   shipTemplate: {fileID: 1658099358000814, guid: f5d7980203402f14a98808a7fd66787d,
@@ -111,13 +113,13 @@ MonoBehaviour:
   - {fileID: 1552667318815680, guid: 33528ff2ee334404da4b17ddf6da5494, type: 2}
   companyTemplate: {fileID: 1583058044750426, guid: dca20380e8019e84c9c84874e3831c34,
     type: 2}
-  company: {fileID: 0}
-  star: {fileID: 0}
+  transportCompany: {fileID: 0}
+  productionCompany: {fileID: 0}
   planetSeperationDistance: 50
-  planetSpawnMax: 10
-  planetSpawnMin: 0
+  planetSpawnMin: 100
+  planetSpawnMax: 100
   moonDistance: 7
-  numOfShips: 20
+  numOfShips: 30
   possiblePlanetSprites:
   - {fileID: 21300000, guid: 9047fabb2e8e4e14a90367b4076b2153, type: 3}
   - {fileID: 21300000, guid: 68ed8c7974a992f4296cfe91ffb4c10d, type: 3}
@@ -135,17 +137,17 @@ MonoBehaviour:
   - {fileID: 21300000, guid: aeb3617db091a4441b083c074e043bc5, type: 3}
   - {fileID: 21300000, guid: dd3555f8349e71a4f88e0f999a000640, type: 3}
   possibleShipSprites:
-  - {fileID: 21300000, guid: 1b935f1be01008f4bb0ea44d6c7ca894, type: 3}
-  - {fileID: 21300000, guid: 7ab2bdd91d3a4014692b3552373f2874, type: 3}
-  - {fileID: 21300000, guid: c92f2adbd729d154f98bc10d7d937372, type: 3}
-  - {fileID: 21300000, guid: d56ba7369c5a9414fa2f1f594c671dc1, type: 3}
-  - {fileID: 21300000, guid: d9dba0e8674ec7143af6a0f07d2c3175, type: 3}
-  - {fileID: 21300000, guid: c32f5de6c4fa65849a60b7d6448f5ea5, type: 3}
-  - {fileID: 21300000, guid: 028547b7e5f99774f8a85c346ad49ba4, type: 3}
-  - {fileID: 21300000, guid: 9e7bbf1956b593040b643a7a21f2e184, type: 3}
-  - {fileID: 21300000, guid: d4936e7298b7d104b82963593b516d79, type: 3}
-  - {fileID: 21300000, guid: bf97d673e960eb74ebd206d637ff9a5a, type: 3}
-  - {fileID: 21300000, guid: 30b8b54a7a162a24bafe361ca07a17ab, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!212 &212533414556617114
 SpriteRenderer:
   m_ObjectHideFlags: 1
