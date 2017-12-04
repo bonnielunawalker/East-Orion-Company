@@ -57,7 +57,7 @@ public class Ship : MonoBehaviour, IInspectable
 		_steeringBasics.maxAcceleration = maxAcceleration;
 		_steeringBasics.turnSpeed = maneuverability;
 		cargoHold.maxUnits = cargoCapacity;
-        GetComponent<SpriteRenderer>().sprite = FindObjectOfType<AssetLoader>().sprites[spriteName]; // TODO: clean up this abomination. Maybe have a spriteassigner class of some sort.
+        GetComponent<SpriteRenderer>().sprite = FindObjectOfType<AssetLoader>().shipSprites[spriteName]; // TODO: clean up this abomination. Maybe have a spriteassigner class of some sort.
 	}
 
 	public void Update()

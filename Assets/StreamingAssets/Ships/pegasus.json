@@ -5,5 +5,5 @@
 	"maxAcceleration": 1,
 	"maneuverability": 1,
 	"cargoCapacity": 70,
-    "spriteName": "blueship1.png"
+    "spriteName": "blueship1"
 }
