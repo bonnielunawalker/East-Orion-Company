@@ -1,0 +1,9 @@
+{
+	"description": "",
+	"mass": 3,
+	"maxSpeed": 7,
+	"maxAcceleration": 1,
+	"maneuverability": 1,
+	"cargoCapacity": 70,
+    "spriteName": "blueship1.png"
+}

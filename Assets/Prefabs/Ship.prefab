@@ -90,7 +90,7 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
@@ -160,10 +160,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fd92fa3efd620043901ab2f481be6f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  description: 
+  mass: 0
+  maxSpeed: 0
+  maxAcceleration: 0
+  maneuverability: 0
+  cargoCapacity: 20
+  spriteName: 
   state: 0
   currentSystem: {fileID: 0}
   destination: {fileID: 0}
-  cargoCapacity: 20
   cargoHold: {fileID: 0}
   employmentData: {fileID: 0}
 --- !u!114 &114772373424209770
@@ -258,5 +264,5 @@ SpriteRenderer:
   m_Size: {x: 2.56, y: 1.28}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0

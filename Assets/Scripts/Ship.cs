@@ -16,6 +16,7 @@ public class Ship : MonoBehaviour, IInspectable
 
 	// Fields set from JSON files
 	public string description;
+    public int mass;
 	public int maxSpeed;
 	public int maxAcceleration;
 	public int maneuverability;
@@ -42,20 +43,21 @@ public class Ship : MonoBehaviour, IInspectable
     {
 		state = ShipState.Idle;
 
-		currentSystem = FindObjectOfType<Star> (); //TODO: when additional starsystems are implemented this will not work.
+		currentSystem = FindObjectOfType<Star>(); //TODO: when additional starsystems are implemented this will not work.
 
-		_rb = GetComponent<Rigidbody2D> ();
-		_steeringBasics = GetComponent<SteeringBasics> ();
-		cargoHold = GetComponentInChildren<StorageNode> ();
-		_infoPanel = GameObject.FindGameObjectWithTag ("Infopanel");
+		_rb = GetComponent<Rigidbody2D>();
+		_steeringBasics = GetComponent<SteeringBasics>();
+		cargoHold = GetComponentInChildren<StorageNode>();
+		_infoPanel = GameObject.FindGameObjectWithTag("Infopanel");
 		employmentData = GetComponent<Employee>();
 
 		// Update components based on JSON input
 		_steeringBasics.maxVelocity = maxSpeed;
+        _rb.mass = mass;
 		_steeringBasics.maxAcceleration = maxAcceleration;
 		_steeringBasics.turnSpeed = maneuverability;
 		cargoHold.maxUnits = cargoCapacity;
-        GetComponent<SpriteRenderer>().sprite = FindObjectOfType<AssetLoader>().sprites[spriteName];
+        GetComponent<SpriteRenderer>().sprite = FindObjectOfType<AssetLoader>().sprites[spriteName]; // TODO: clean up this abomination. Maybe have a spriteassigner class of some sort.
 	}
 
 	public void Update()

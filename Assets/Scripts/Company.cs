@@ -5,7 +5,6 @@ using UnityEngine;
 [System.Serializable]
 public class Company : MonoBehaviour
 {
-
 	public List<Contract> outstandingContracts = new List<Contract>();
 	public List<Contract> acceptedContracts = new List<Contract>();
 	private List<Contract> _acceptedContractsRemovalBuffer = new List<Contract>();

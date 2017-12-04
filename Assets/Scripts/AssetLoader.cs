@@ -28,14 +28,14 @@ public class AssetLoader : MonoBehaviour
 
 	public void LoadDataFile(FileInfo file)
 	{
-		WWW www = new WWW ("file://" + file.FullName.ToString ());
+		WWW www = new WWW("file://" + file.FullName.ToString ());
 		string key = file.Name.Replace(".json", "");
 		data.Add(key, www.text);
 	}
 
 	public void LoadSprite(FileInfo file)
 	{
-		WWW www = new WWW ("file://" + file.FullName.ToString ());
+		WWW www = new WWW("file://" + file.FullName.ToString());
         float pixelsPerUnit = 200f;
 
         Texture2D texture = new Texture2D(www.texture.width, www.texture.height);
