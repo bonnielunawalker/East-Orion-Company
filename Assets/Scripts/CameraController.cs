@@ -30,10 +30,6 @@ public class CameraController : MonoBehaviour
 			Vector3 pos = _camera.ScreenToViewportPoint (Input.mousePosition - _dragOrigin);
 			Vector3 move = new Vector3 (-pos.x * dragSpeed, -pos.y * dragSpeed, 0);
 			_camera.transform.Translate (move * (-_camera.transform.position.z / 10), Space.World);
-
-			GetScroll ();
-			Follow ();
-			return;
 		}
 		else
 		{
@@ -60,7 +56,10 @@ public class CameraController : MonoBehaviour
 
 			_camera.transform.Translate (pan * (-_camera.transform.position.z / 10), Space.World);
 		}
-	}
+
+        GetScroll();
+        Follow();
+    }
 
 	private void GetScroll()
     {

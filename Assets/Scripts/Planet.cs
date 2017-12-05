@@ -88,9 +88,7 @@ public class Planet : MonoBehaviour, IInspectable
     {
         List<Resource> result = new List<Resource>();
 
-        foreach (StorageNode n in StorageNodes)
-            foreach (Resource r in n.resources)
-                result.Add(r);
+        result = StorageNodes.Aggregate((nodes, next) => next).resources;
 
         return result;
     }

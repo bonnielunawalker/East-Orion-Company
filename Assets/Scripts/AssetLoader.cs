@@ -21,8 +21,6 @@ public class AssetLoader : MonoBehaviour
     private Dictionary<string, byte[]> _starSpriteData = new Dictionary<string, byte[]>();
 
     // Load checks
-    private int _dataDictsFilled = 0;
-    private int _numDataDicts = 5;
     private int _spriteFileDictsFilled = 0;
     private int _numSpriteFileDicts = 3;
 
@@ -69,6 +67,7 @@ public class AssetLoader : MonoBehaviour
 
     public void Update()
     {
+        // TODO: Split this off into coroutines to save a little time
         if (SpriteFilesLoaded() && !_generatingSprites)
         {
             _generatingSprites = true;
@@ -126,8 +125,6 @@ public class AssetLoader : MonoBehaviour
             string key = file.Name.Replace(".json", "");
             dataDict.Add(key, text);
         }
-
-        _dataDictsFilled++;
     }
 
     // Populates a dictionary that holds a string name for the sprite and an array of bytes that holds the texture data.

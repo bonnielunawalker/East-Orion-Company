@@ -26,6 +26,8 @@ public class ProductionNode : IndustryNode
 
 	public NodeState state = NodeState.Idle;
 
+    private bool _gatheringRequirements = false;
+
 	public void Start()
     {
 		employmentData = GetComponent<Employee> ();
@@ -40,6 +42,14 @@ public class ProductionNode : IndustryNode
         // Update our list of required resources
         UpdateRequirements();
 
+        // If after all those checks we did not need to place any orders and do not need any resources, start producing our product
+        if (_requestedResourceTypes.Count == 0 && _requiredResources.Count == 0)
+        {
+            state = NodeState.Producing;
+            StartCoroutine(Produce());
+            return;
+        }
+
         // If we have resources that we need to request, create contracts for them.
         if (_requiredResources.Count != 0)
         {
@@ -52,13 +62,6 @@ public class ProductionNode : IndustryNode
             foreach (ResourceType t in _requestedResourceTypes)
                 _requiredResources.RemoveAll(r => r.type == t);
         }
-
-        // If after all those checks we did not need to place any orders and do not need any resources, start producing our product
-        if (_requestedResourceTypes.Count == 0 && _requiredResources.Count == 0)
-        {
-            state = NodeState.Producing;
-            StartCoroutine(Produce());
-        }
     }
 
     private void UpdateRequirements()
@@ -68,10 +71,7 @@ public class ProductionNode : IndustryNode
                 continue;
             // Only add a new resource requirement if one for this resource does not already exist and we have not already made a contract
             else if (!_requiredResources.Exists(r => r.type == resource.type) && !_requestedResourceTypes.Exists(r => r == resource.type))
-			{
-				_requiredResources.Add(new Resource(resource.type, resource.amount));
-				Debug.Log("Not enough resources, I should post a contract.");
-			}
+                _requiredResources.Add(new Resource(resource.type, resource.amount));
     }
 
     public override bool SuppliesResource(ResourceType type)
@@ -121,6 +121,8 @@ public class ProductionNode : IndustryNode
 
 		FreightContract newContract = new FreightContract (employmentData, employmentData.employer, reservation, star.jobBoard);
 		employmentData.employer.ConsiderIssuingContract (newContract);
+
+        Debug.Log("Posting contract");
 	}
 
     public void NotifyOfContractRejection(FreightContract c)

@@ -16,16 +16,20 @@
  - [ ] Different planet types give different production bonuses to industry groups.
  - [ ] Different ship types have different speeds, cargo capacities, etc.
 
-## Iteration 3 - Currency system
+## Iteration 3 - Performance
+ - [ ] Game objects can query a system's resources/planets etc. through an index system
+ - [ ] A seperate thread gathers the current state of all storage nodes in a system. When this process terminates, the system's index is updated with the new values of this list on the main thread.
+
+## Iteration 4 - Currency system
  - [ ] Companies can purchase resources from other companies' factories based on the needs of their factories.
  - [ ] Factories will place orders for resources at a certain threshold, not when they run out entirely.
  - [ ] Companies can pay to build factories and ships.
 
-## Iteration 4 - Intelligent company decision making
+## Iteration 5 - Intelligent company decision making
  - [ ] Companies take into account the needs of their current factories and other factories in the system when deciding what to build.
  - [ ] Construction of ships and factories require resource input, not a flat currency amount to purchase.
 
-## Iteration 5 - Player interaction
+## Iteration 6 - Player interaction
  - [ ] Player can queue up the construction of factories and ships.
  - [ ] Player can select planets to get production information about factories.
  - [ ] Basic audio cues play when the player selects things.
