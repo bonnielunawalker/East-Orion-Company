@@ -57,8 +57,15 @@ public class Ship : MonoBehaviour, IInspectable
 		_steeringBasics.maxAcceleration = maxAcceleration;
 		_steeringBasics.turnSpeed = maneuverability;
 		cargoHold.maxUnits = cargoCapacity;
-        GetComponent<SpriteRenderer>().sprite = FindObjectOfType<AssetLoader>().shipSprites[spriteName]; // TODO: clean up this abomination. Maybe have a spriteassigner class of some sort.
-	}
+        GetComponent<SpriteRenderer>().sprite = FindObjectOfType<AssetLoader>().shipSprites[spriteName]; // TODO: clean up this abomination. Maybe have a spriteassigner class of some sort?
+
+        // Change the size of the box collider based on the sprite.
+        Vector2 spriteSize = GetComponent<SpriteRenderer>().sprite.bounds.size;
+        BoxCollider2D collider = gameObject.GetComponent<BoxCollider2D>();
+        collider.size = spriteSize;
+        collider.offset = Vector2.zero;
+
+    }
 
 	public void Update()
 	{
@@ -130,19 +137,19 @@ public class Ship : MonoBehaviour, IInspectable
 	public void OnMouseOver()
     {
 		_selected = true;
-		FindObjectOfType<InputController> ().inspectableSelected = true;
+		FindObjectOfType<InputController>().inspectableSelected = true;
 	}
 
 	public void OnMouseExit()
     {
 		_selected = false;
-		FindObjectOfType<InputController> ().inspectableSelected = false;
+		FindObjectOfType<InputController>().inspectableSelected = false;
 	}
 
-	public void OnMouseDown ()
+	public void OnMouseDown()
     {
 		GameObject camera = GameObject.FindGameObjectWithTag ("MainCamera");
-		camera.SendMessage ("SetFollow", gameObject);
+		camera.SendMessage("SetFollow", gameObject);
 	}
 
 	public void OnTriggerEnter2D(Collider2D c)
@@ -151,7 +158,7 @@ public class Ship : MonoBehaviour, IInspectable
 			_atDestination = true;
 	}
 
-	public string ObjectInfo ()
+	public string ObjectInfo()
     {
 		string result = "Name: " + name + "\nState: " + System.Enum.GetName(typeof(ShipState), state); 
 

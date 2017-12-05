@@ -10,7 +10,7 @@
  - [x] Companies can accept contracts and distribute them to their employees.
  - [x] Ships can complete freight delivery contracts.
 
-## Iteration 2 - Modability
+## Iteration 2 - Moddability
  - [ ] Resources, ships, factories and planet types are all read from JSON files on game start up.
  - [ ] Different resources are belong to different industry groups.
  - [ ] Different planet types give different production bonuses to industry groups.
@@ -34,6 +34,9 @@
  - [ ] Player can build factories and ships.
  - [ ] Other companies build factories and ships.
  - [ ] Player can earn money by producing high demand resources that other companies will purchase.
+
+## Future features
+ - [ ] Players can import new scripts and add them to their custom ships, factories etc.
 
 # Credits
 Ship sprites created by [MillionthVector](http://millionthvector.blogspot.com.au), licensed under [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by/4.0/#).

@@ -16,7 +16,20 @@ public class AssetLoader : MonoBehaviour
     public Dictionary<string, Sprite> planetSprites = new Dictionary<string, Sprite>();
     public Dictionary<string, Sprite> starSprites = new Dictionary<string, Sprite>();
 
-    public void LoadAssets()
+    private Dictionary<string, byte[]> _shipSpriteData = new Dictionary<string, byte[]>();
+    private Dictionary<string, byte[]> _planetSpriteData = new Dictionary<string, byte[]>();
+    private Dictionary<string, byte[]> _starSpriteData = new Dictionary<string, byte[]>();
+
+    // Load checks
+    private int _dataDictsFilled = 0;
+    private int _numDataDicts = 5;
+    private int _spriteFileDictsFilled = 0;
+    private int _numSpriteFileDicts = 3;
+
+    private bool _generatingSprites = false;
+    private bool _doneLoading = false;
+
+    public void Start()
 	{
         // Data directories
         DirectoryInfo resourceDataDir = new DirectoryInfo(Application.streamingAssetsPath + "/Resources");
@@ -30,68 +43,113 @@ public class AssetLoader : MonoBehaviour
         DirectoryInfo planetSpriteDir = new DirectoryInfo(Application.streamingAssetsPath + "/Planets/Sprites");
         DirectoryInfo starSpriteDir = new DirectoryInfo(Application.streamingAssetsPath + "/Stars/Sprites");
 
-        // Load data files
-        Debug.Log("Loading resource data");
-        LoadDataFiles(resourceDataDir, resourceData);
-        Debug.LogFormat("{0} files loaded", resourceData.Count);
+        // Set up threads
+        Thread resourceDataThread = new Thread(() => LoadDataFiles(resourceDataDir, resourceData));
+        Thread planetDataThread = new Thread(() => LoadDataFiles(planetDataDir, planetData));
+        Thread resourceNodeDataThread = new Thread(() => LoadDataFiles(resourceNodeDataDir, resourceNodeData));
+        Thread factoryDataThread = new Thread(() => LoadDataFiles(factoryDataDir, factoryData));
+        Thread shipDataThread = new Thread(() => LoadDataFiles(shipDataDir, shipData));
 
-        Debug.Log("Loading planet data");
-        LoadDataFiles(planetDataDir, planetData);
-        Debug.LogFormat("{0} files loaded", planetData.Count);
+        Thread shipSpriteThread = new Thread(() => LoadSprites(shipSpriteDir, _shipSpriteData));
+        Thread planetSpriteThread = new Thread(() => LoadSprites(planetSpriteDir, _planetSpriteData));
+        Thread starSpriteThread = new Thread(() => LoadSprites(starSpriteDir, _starSpriteData));
 
-        Debug.Log("Loading resource node data");
-        LoadDataFiles(resourceNodeDataDir, resourceNodeData);
-        Debug.LogFormat("{0} files loaded", resourceNodeData.Count);
-
-        Debug.Log("Loading factory data");
-        LoadDataFiles(factoryDataDir, factoryData);
-        Debug.LogFormat("{0} files loaded", factoryData.Count);
-
-        Debug.Log("Loading ship data");
-        LoadDataFiles(shipDataDir, shipData);
-        Debug.LogFormat("{0} files loaded", shipData.Count);
+        // Load JSON files
+        resourceDataThread.Start();
+        planetDataThread.Start();
+        resourceNodeDataThread.Start();
+        factoryDataThread.Start();
+        shipDataThread.Start();
 
         // Load sprites
-        Debug.Log("Loading ship sprites");
-        LoadSprites(shipSpriteDir, shipSprites);
-        Debug.LogFormat("{0} files loaded", shipSprites.Count);
-
-        Debug.Log("Loading planet sprites");
-        LoadSprites(planetSpriteDir, planetSprites);
-        Debug.LogFormat("{0} files loaded", planetSprites.Count);
-
-        Debug.Log("Loading star sprites");
-        LoadSprites(starSpriteDir, starSprites);
-        Debug.LogFormat("{0} files loaded", starSprites.Count);
+        shipSpriteThread.Start();
+        planetSpriteThread.Start();
+        starSpriteThread.Start();
     }
 
-	public void LoadDataFiles(DirectoryInfo dir, Dictionary<string, string> dataDict)
+    public void Update()
+    {
+        if (SpriteFilesLoaded() && !_generatingSprites)
+        {
+            _generatingSprites = true;
+
+            // Load all ship sprites from byte arrays
+            foreach (KeyValuePair<string, byte[]> kvp in _shipSpriteData)
+            {
+                Texture2D texture = new Texture2D(0, 0);
+                texture.LoadImage(kvp.Value);
+
+                Rect rect = new Rect(0, 0, texture.width, texture.height);
+
+                Sprite sprite = Sprite.Create(texture, rect, new Vector2(0.5f, 0.5f), 200f);
+
+                shipSprites.Add(kvp.Key, sprite);
+            }
+
+            // Load all planet sprites from byte arrays
+            foreach (KeyValuePair<string, byte[]> kvp in _planetSpriteData)
+            {
+                Texture2D texture = new Texture2D(0, 0);
+                texture.LoadImage(kvp.Value);
+
+                Rect rect = new Rect(0, 0, texture.width, texture.height);
+
+                Sprite sprite = Sprite.Create(texture, rect, new Vector2(0.5f, 0.5f), 200f);
+
+                planetSprites.Add(kvp.Key, sprite);
+            }
+
+            // Load all star sprites from byte arrays
+            foreach (KeyValuePair<string, byte[]> kvp in _starSpriteData)
+            {
+                Texture2D texture = new Texture2D(0, 0);
+                texture.LoadImage(kvp.Value);
+
+                Rect rect = new Rect(0, 0, texture.width, texture.height);
+
+                Sprite sprite = Sprite.Create(texture, rect, new Vector2(0.5f, 0.5f), 200f);
+
+                starSprites.Add(kvp.Key, sprite);
+            }
+
+            Debug.Log("Done loading!");
+            _doneLoading = true;
+        }
+    }
+
+    // Populates a dictionary that holds a string name for the JSON file and another string with the contents of the file.
+    public void LoadDataFiles(DirectoryInfo dir, Dictionary<string, string> dataDict)
 	{
         foreach (FileInfo file in dir.GetFiles("*.json"))
         {
-            WWW www = new WWW("file://" + file.FullName.ToString ());
-		    string key = file.Name.Replace(".json", "");
-            dataDict.Add(key, www.text);
-        }       
-	}
+            string text = file.OpenText().ReadToEnd();
+            string key = file.Name.Replace(".json", "");
+            dataDict.Add(key, text);
+        }
 
-	public void LoadSprites(DirectoryInfo dir, Dictionary<string, Sprite> spriteDict)
+        _dataDictsFilled++;
+    }
+
+    // Populates a dictionary that holds a string name for the sprite and an array of bytes that holds the texture data.
+	public void LoadSprites(DirectoryInfo dir, Dictionary<string, byte[]> spriteDataDict)
 	{
         foreach (FileInfo file in dir.GetFiles("*.png"))
         {
-            WWW www = new WWW("file://" + file.FullName.ToString());
+            byte[] pixels = File.ReadAllBytes(file.FullName);
             string key = file.Name.Replace(".png", "");
-            float pixelsPerUnit = 200f;
-
-            Texture2D texture = new Texture2D(www.texture.width, www.texture.height);
-            www.LoadImageIntoTexture(texture);
-
-            Rect rect = new Rect(0, 0, texture.width, texture.height);
-
-            Sprite s = Sprite.Create(texture, rect, new Vector2(0.5f, 0.5f), pixelsPerUnit);
-
-            spriteDict.Add(key, s);
+            spriteDataDict.Add(key, pixels);
         }
 
-	}
+        _spriteFileDictsFilled++;
+    }
+
+    private bool SpriteFilesLoaded()
+    {
+        return _spriteFileDictsFilled == _numSpriteFileDicts;
+    }
+
+    public bool DoneLoading()
+    {
+        return _doneLoading;
+    }
 }
