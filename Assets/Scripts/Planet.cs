@@ -53,9 +53,9 @@ public class Planet : MonoBehaviour, IInspectable
     */
 
     // Returns a list of all unique resource types with at least one unit currently in storage on the planet.
-    public List<ResourceType> ResourceTypesAvailable()
+    public List<string> ResourceTypesAvailable()
     {
-        List<ResourceType> result = new List<ResourceType>();
+        List<string> result = new List<string>();
 
         foreach (StorageNode n in StorageNodes)
             foreach (Resource r in n.resources)
@@ -66,9 +66,9 @@ public class Planet : MonoBehaviour, IInspectable
     }
 
     // Returns a list of all unique resource types produced on the planet.
-    public List<ResourceType> ResourceTypesProduced()
+    public List<string> ResourceTypesProduced()
     {
-        List<ResourceType> result = new List<ResourceType>();
+        List<string> result = new List<string>();
 
         foreach (ProductionNode n in ProductionNodes)
             foreach (ResourceFlow r in n.outputs)
@@ -122,7 +122,7 @@ public class Planet : MonoBehaviour, IInspectable
 		foreach (ResourceNode n in ResourceNodes) {
 			foreach (ResourceFlow output in n.outputs)
             {
-				result += "\n\t" + System.Enum.GetName(typeof(ResourceType), output.type);
+				result += "\n\t" + output.type;
 				result += "\tAmount: " + output.amount;
 			}
 		}
@@ -131,7 +131,7 @@ public class Planet : MonoBehaviour, IInspectable
         {
 			foreach (ResourceFlow output in n.outputs)
             {
-				result += "\n\t" + System.Enum.GetName(typeof(ResourceType), output.type);
+				result += "\n\t" + output.type;
 				result += "\tAmount: " + output.amount;
 			}
 		}
@@ -142,7 +142,7 @@ public class Planet : MonoBehaviour, IInspectable
         {
 			foreach (ResourceFlow input in n.inputs)
             {
-				result += "\n\t" + System.Enum.GetName(typeof(ResourceType), input.type);
+				result += "\n\t" + input.type;
 				result += "\tAmount: " + input.amount;
 				if (n.state == ProductionNode.NodeState.Producing)
 					Debug.Log("PRODUCING!");
@@ -156,7 +156,7 @@ public class Planet : MonoBehaviour, IInspectable
         {
 			foreach (Resource storedResource in n.resources)
             {
-				result += "\n\t" + System.Enum.GetName (typeof(ResourceType), storedResource.type);
+				result += "\n\t" + storedResource.type;
 				result += "\tAmount: " + storedResource.amount;
 			}
 

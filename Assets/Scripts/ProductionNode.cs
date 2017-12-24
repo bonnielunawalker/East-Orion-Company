@@ -19,7 +19,7 @@ public class ProductionNode : IndustryNode
 
 	private List<Resource> _reservedResources = new List<Resource>();
 	private List<Resource> _requiredResources = new List<Resource>();
-    private List<ResourceType> _requestedResourceTypes = new List<ResourceType>();
+    private List<string> _requestedResourceTypes = new List<string>();
 
 	[Range(1, 1000)]
 	public float cycleTime = 3f;
@@ -59,7 +59,7 @@ public class ProductionNode : IndustryNode
                 CreateFreightContract(r);
 
             // Clean up. Remove all required resources for which we have already placed an order.
-            foreach (ResourceType t in _requestedResourceTypes)
+            foreach (string t in _requestedResourceTypes)
                 _requiredResources.RemoveAll(r => r.type == t);
         }
     }
@@ -74,12 +74,12 @@ public class ProductionNode : IndustryNode
                 _requiredResources.Add(new Resource(resource.type, resource.amount));
     }
 
-    public override bool SuppliesResource(ResourceType type)
+    public override bool SuppliesResource(string type)
     {
 		return outputs.Exists (output => output.type == type);
 	}
 
-	public override bool HasResourceAmount (ResourceType type, int amount)
+	public override bool HasResourceAmount (string type, int amount)
     {
 		return connectedStorageNode.HasResourceAmount (type, amount);
 	}

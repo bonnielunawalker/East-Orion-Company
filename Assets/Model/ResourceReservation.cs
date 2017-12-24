@@ -13,7 +13,7 @@ public struct ResourceReservation
         this.location = location;
 	}
 
-	public bool Matches(ResourceType type, int amount, StorageNode reserver)
+	public bool Matches(string type, int amount, StorageNode reserver)
     {
 		return resource.type == type && resource.amount == amount;
 	}

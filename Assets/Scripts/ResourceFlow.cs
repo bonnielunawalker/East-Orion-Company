@@ -5,12 +5,12 @@ using UnityEngine;
 [System.Serializable]
 public class ResourceFlow
 {
-	public ResourceType type;
+	public string type;
 	public int amount;
 
 	public ResourceFlow() {}
 
-	public ResourceFlow(ResourceType t, int amt)
+	public ResourceFlow(string t, int amt)
     {
 		type = t;
 		amount = amt;

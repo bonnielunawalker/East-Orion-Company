@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class AssetLoader : MonoBehaviour
@@ -24,7 +25,6 @@ public class AssetLoader : MonoBehaviour
     private int _spriteFileDictsFilled = 0;
     private int _numSpriteFileDicts = 3;
 
-    private bool _generatingSprites = false;
     private bool _doneLoading = false;
 
     public void Start()
@@ -42,78 +42,73 @@ public class AssetLoader : MonoBehaviour
         DirectoryInfo starSpriteDir = new DirectoryInfo(Application.streamingAssetsPath + "/Stars/Sprites");
 
         // Set up threads
-        Thread resourceDataThread = new Thread(() => LoadDataFiles(resourceDataDir, resourceData));
-        Thread planetDataThread = new Thread(() => LoadDataFiles(planetDataDir, planetData));
-        Thread resourceNodeDataThread = new Thread(() => LoadDataFiles(resourceNodeDataDir, resourceNodeData));
-        Thread factoryDataThread = new Thread(() => LoadDataFiles(factoryDataDir, factoryData));
-        Thread shipDataThread = new Thread(() => LoadDataFiles(shipDataDir, shipData));
+        Task loadResourceData = Task.Run(() => LoadDataFiles(resourceDataDir, resourceData));
+        Task loadPlanetData = Task.Run(() => LoadDataFiles(planetDataDir, planetData));
+        Task loadResourceNodeData = Task.Run(() => LoadDataFiles(resourceNodeDataDir, resourceNodeData));
+        Task loadFactoryData = Task.Run(() => LoadDataFiles(factoryDataDir, factoryData));
+        Task loadShipData = Task.Run(() => LoadDataFiles(shipDataDir, shipData));
 
-        Thread shipSpriteThread = new Thread(() => LoadSprites(shipSpriteDir, _shipSpriteData));
-        Thread planetSpriteThread = new Thread(() => LoadSprites(planetSpriteDir, _planetSpriteData));
-        Thread starSpriteThread = new Thread(() => LoadSprites(starSpriteDir, _starSpriteData));
+        Task loadShipSprites = Task.Run(() => LoadSprites(shipSpriteDir, _shipSpriteData));
+        Task loadPlanetSprites = Task.Run(() => LoadSprites(planetSpriteDir, _planetSpriteData));
+        Task loadStarSprites = Task.Run(() => LoadSprites(starSpriteDir, _starSpriteData));
 
-        // Load JSON files
-        resourceDataThread.Start();
-        planetDataThread.Start();
-        resourceNodeDataThread.Start();
-        factoryDataThread.Start();
-        shipDataThread.Start();
+        Debug.Log("waiting");
+        Task.WaitAll(new Task[] { loadResourceData, loadPlanetData, loadResourceNodeData, loadFactoryData, loadShipData });
+        Debug.Log("done waiting");
 
-        // Load sprites
-        shipSpriteThread.Start();
-        planetSpriteThread.Start();
-        starSpriteThread.Start();
+        Task createResourceTypes = Task.Run(() => CreateResourceTypes());
+        Task createPlanetTypes = Task.Run(() => CreatePlanetTypes());
+        Task createResourceNodeTypes = Task.Run(() => CreateResourceNodeTypes());
+        Task createFactoryTypes = Task.Run(() => CreateFactoryTypes());
+        Task createShipTypes = Task.Run(() => CreateShipTypes());
+
+        Debug.Log("waiting");
+        Task.WaitAll(new Task[] { createResourceTypes, createPlanetTypes, createResourceNodeTypes, createFactoryTypes, createShipTypes });
+        Debug.Log("done waiting");
     }
 
     public void Update()
     {
-        // TODO: Split this off into coroutines to save a little time
-        if (SpriteFilesLoaded() && !_generatingSprites)
+        // Load all ship sprites from byte arrays
+        foreach (KeyValuePair<string, byte[]> kvp in _shipSpriteData)
         {
-            _generatingSprites = true;
+            Texture2D texture = new Texture2D(0, 0);
+            texture.LoadImage(kvp.Value);
 
-            // Load all ship sprites from byte arrays
-            foreach (KeyValuePair<string, byte[]> kvp in _shipSpriteData)
-            {
-                Texture2D texture = new Texture2D(0, 0);
-                texture.LoadImage(kvp.Value);
+            Rect rect = new Rect(0, 0, texture.width, texture.height);
 
-                Rect rect = new Rect(0, 0, texture.width, texture.height);
+            Sprite sprite = Sprite.Create(texture, rect, new Vector2(0.5f, 0.5f), 200f);
 
-                Sprite sprite = Sprite.Create(texture, rect, new Vector2(0.5f, 0.5f), 200f);
-
-                shipSprites.Add(kvp.Key, sprite);
-            }
-
-            // Load all planet sprites from byte arrays
-            foreach (KeyValuePair<string, byte[]> kvp in _planetSpriteData)
-            {
-                Texture2D texture = new Texture2D(0, 0);
-                texture.LoadImage(kvp.Value);
-
-                Rect rect = new Rect(0, 0, texture.width, texture.height);
-
-                Sprite sprite = Sprite.Create(texture, rect, new Vector2(0.5f, 0.5f), 200f);
-
-                planetSprites.Add(kvp.Key, sprite);
-            }
-
-            // Load all star sprites from byte arrays
-            foreach (KeyValuePair<string, byte[]> kvp in _starSpriteData)
-            {
-                Texture2D texture = new Texture2D(0, 0);
-                texture.LoadImage(kvp.Value);
-
-                Rect rect = new Rect(0, 0, texture.width, texture.height);
-
-                Sprite sprite = Sprite.Create(texture, rect, new Vector2(0.5f, 0.5f), 200f);
-
-                starSprites.Add(kvp.Key, sprite);
-            }
-
-            Debug.Log("Done loading!");
-            _doneLoading = true;
+            shipSprites.Add(kvp.Key, sprite);
         }
+
+        // Load all planet sprites from byte arrays
+        foreach (KeyValuePair<string, byte[]> kvp in _planetSpriteData)
+        {
+            Texture2D texture = new Texture2D(0, 0);
+            texture.LoadImage(kvp.Value);
+
+            Rect rect = new Rect(0, 0, texture.width, texture.height);
+
+            Sprite sprite = Sprite.Create(texture, rect, new Vector2(0.5f, 0.5f), 200f);
+
+            planetSprites.Add(kvp.Key, sprite);
+        }
+
+        // Load all star sprites from byte arrays
+        foreach (KeyValuePair<string, byte[]> kvp in _starSpriteData)
+        {
+            Texture2D texture = new Texture2D(0, 0);
+            texture.LoadImage(kvp.Value);
+
+            Rect rect = new Rect(0, 0, texture.width, texture.height);
+
+            Sprite sprite = Sprite.Create(texture, rect, new Vector2(0.5f, 0.5f), 200f);
+
+            starSprites.Add(kvp.Key, sprite);
+        }
+
+        _doneLoading = true;
     }
 
     // Populates a dictionary that holds a string name for the JSON file and another string with the contents of the file.
@@ -143,6 +138,32 @@ public class AssetLoader : MonoBehaviour
     private bool SpriteFilesLoaded()
     {
         return _spriteFileDictsFilled == _numSpriteFileDicts;
+    }
+
+    private void CreateResourceTypes()
+    {
+        foreach (KeyValuePair<string, string> kvp in resourceData)
+            Resource.AddResourceType(kvp.Key, kvp.Value);
+    }
+
+    private void CreatePlanetTypes()
+    {
+
+    }
+
+    private void CreateResourceNodeTypes()
+    {
+
+    }
+
+    private void CreateFactoryTypes()
+    {
+
+    }
+
+    private void CreateShipTypes()
+    {
+
     }
 
     public bool DoneLoading()

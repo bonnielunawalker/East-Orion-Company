@@ -23,12 +23,12 @@ public class StorageNode : IndustryNode
 		return maxUnits - usedCapacity;
 	}
 
-	public override bool SuppliesResource(ResourceType type)
+	public override bool SuppliesResource(string type)
     {
 		return resources.Exists (r => r.type == type);
 	}
 
-	public override bool HasResourceAmount(ResourceType type, int amount)
+	public override bool HasResourceAmount(string type, int amount)
     {
 		foreach (Resource r in resources)
 			if (r.type == type && r.amount >= amount)
@@ -59,7 +59,7 @@ public class StorageNode : IndustryNode
     {
 		if (resource.amount > CapacityRemaining())
         {
-			Debug.LogError ("Trying to put " + resource.amount + " of " + System.Enum.GetName(typeof(ResourceType), resource.type) + " when only " + CapacityRemaining() + " units of space remain.");
+			Debug.LogError ("Trying to put " + resource.amount + " of " + resource.type + " when only " + CapacityRemaining() + " units of space remain.");
 			return;
 		}
 
@@ -81,10 +81,10 @@ public class StorageNode : IndustryNode
 		if (storedAmount >= resource.amount)
 			to.Put(Take (resource));
 		else
-			Debug.LogWarning("Not enough units of " + System.Enum.GetName(typeof(ResourceType), resource.type) + ". " + resource.amount + " requested, only " + storedAmount + " stored.");
+			Debug.LogWarning("Not enough units of " + resource.type + ". " + resource.amount + " requested, only " + storedAmount + " stored.");
 	}
 
-	public int QueryAmount(ResourceType type)
+	public int QueryAmount(string type)
     {
 		if (resources.Exists (resource => resource.type == type))
 			return resources.Find (resource => resource.type == type).amount;

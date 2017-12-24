@@ -3,7 +3,7 @@
 
 # To Do List
 ## Iteration 1 - Getting things up and running
- - [x] Ships can from planet to planet.
+ - [x] Ships can travel from planet to planet.
  - [x] Factories can produce resources based on their inputs.
  - [x] Companies own factories and ships.
  - [x] Factories can place orders for materials they are missing and wait for those materials to be delivered.
@@ -12,9 +12,9 @@
 
 ## Iteration 2 - Moddability
  - [ ] Resources, ships, factories and planet types are all read from JSON files on game start up.
- - [ ] Different resources are belong to different industry groups.
+ - [ ] Different resources belong to different industry groups.
  - [ ] Different planet types give different production bonuses to industry groups.
- - [ ] Different ship types have different speeds, cargo capacities, etc.
+ - [x] Different ship types have different speeds, cargo capacities, etc.
 
 ## Iteration 3 - Performance
  - [ ] Game objects can query a system's resources/planets etc. through an index system

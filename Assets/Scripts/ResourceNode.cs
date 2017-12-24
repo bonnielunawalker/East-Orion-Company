@@ -30,12 +30,12 @@ public class ResourceNode : IndustryNode
 			StartCoroutine (Produce());
 	}
 
-	public override bool SuppliesResource(ResourceType type)
+	public override bool SuppliesResource(string type)
     {
 		return outputs.Exists (output => output.type == type);
 	}
 
-	public override bool HasResourceAmount(ResourceType type, int amount)
+	public override bool HasResourceAmount(string type, int amount)
     {
 		return connectedStorageNode.HasResourceAmount (type, amount);
 	}
